@@ -1,8 +1,10 @@
-class ListeChainee<T> implements Sequence<T> {
+package structures;
+
+public class ListeChainee<T> implements Sequence<T> {
     CelluleListeChainee<T> premier = null;
 
 	public Iterateur<T> iterateur() {
-		return new IterateurListeChainee<T>(this);
+		return (Iterateur<T>) new IterateurListeChainee<T>(this);
 	}
 
     public void insereTete(T element) {
@@ -41,7 +43,7 @@ class ListeChainee<T> implements Sequence<T> {
 			prevCell = prevCell.suivant;
 		}
 
-		CelluleListeChainee<T> currCell = new CelluleListeChaine<>();
+		CelluleListeChainee<T> currCell = new CelluleListeChainee<>();
 
 		currCell.valeur = element;
 		currCell.suivant = prevCell.suivant;

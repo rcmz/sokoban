@@ -1,13 +1,15 @@
+package structures;
+
 import java.util.*;
 
-class Tableau<T> implements Sequence<T> {
+public class Tableau<T> implements Sequence<T> {
     
     public T[] tableau = (T[]) new Object[1];
     public int tete = 0;
     public int taille = 0;
 
 	public Iterateur<T> iterateur() {
-		return new IterateurTableau<T>(this);
+		return (Iterateur<T>) new IterateurTableau<T>(this);
 	}
 
     public void insereTete(T element) {
@@ -96,7 +98,7 @@ class Tableau<T> implements Sequence<T> {
             throw new RuntimeException("indice incorrect");
         }
 
-        return tableau[(tete + i) % tableau.taille];
+        return tableau[(tete + i) % tableau.length];
     }
 
     public boolean estVide() {
