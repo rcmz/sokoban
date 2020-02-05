@@ -1,33 +1,51 @@
-public class IterateurTableau<T> {
+public class IterateurListeChainee<T> {
     private boolean supprimeCallable;
-    private int position;
-    private Tableau<T> tableau;
+    private CelluleListeChainee<T> prevCell;
+	private CelluleListeChainee<T> currCell;
+    private ListeChainee<T> liste;
 
-    Iterateur(Tableau<T> tableau) {
-        this.tableau = tableau;
+    IterateurListeChainee(ListeChainee<T> liste) {
+        this.liste = liste;
         this.supprimeCallable = false;
-        this.position = 0;
+        this.prevCell = null;
+
+		try {
+			this.currCell = getCurrCell();
+		} catch (RuntimeException e) {
+			System.out.println("La liste chaînée sur laquelle vous souhaitez itérer est vide !");
+		}
     }
 
+	private CelluleListeChainee<T> getCurrCell() {
+		if (liste.premier == null) {
+			throw new RuntimeException("");
+		} else {
+			return liste.premier;
+		}
+	}
+
     boolean aProchain() {
-        return position < this.tableau.taille;
+        return currCell.suivant != null;
     }
 
     T prochain() {
         if (aProchain()) {
             supprimeCallable = true;
-            return sequence.element(++position);
+            prevCell = currCell;
+			currCell = currCell.suivant;
+			return currCell.valeur;
         }
         else {
             System.out.println("Vous vous situez déjà en bout de liste !");
-        }
+        	return null;
+		}
     }
 
     void supprime() {
         if (supprimeCallable) {
             supprimeCallable = false;
-            tableau.supprime(position)
-        } else {
+        	prevCell.suivant = currCell.suivant;
+		} else {
             throw new IllegalStateException();
         }
     }

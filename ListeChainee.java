@@ -1,8 +1,8 @@
 class ListeChainee<T> implements Sequence<T> {
-    CelluleListeChainee premier = null;
+    CelluleListeChainee<T> premier = null;
 
     public void insereTete(T element) {
-        CelluleListeChainee<T> tete = new CelluleListeChainee<>();
+		CelluleListeChainee<T> tete = new CelluleListeChainee<>();
         tete.valeur = element;
         tete.suivant = premier;
         premier = tete;

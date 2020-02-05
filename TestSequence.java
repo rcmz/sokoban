@@ -1,6 +1,6 @@
 class TestSequence {
     public static void main(String[] args) {
-        Sequence<Integer> sequence = new Tableau<>();
+        Sequence<Integer> sequence = new ListeChainee<>();
 
         System.out.println(sequence);
 
