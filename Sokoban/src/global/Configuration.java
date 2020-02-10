@@ -1,8 +1,10 @@
 package global;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 import structures.*;
@@ -81,5 +83,17 @@ public class Configuration {
 		}
 		
 		return properties;
+	}
+
+	public static InputStream charge(String string) {
+		InputStream fis = null;
+		
+		try {
+			fis = new FileInputStream(string); 
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return fis;
 	}
 }
