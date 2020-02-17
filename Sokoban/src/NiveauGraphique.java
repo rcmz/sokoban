@@ -42,7 +42,7 @@ class NiveauGraphique extends JComponent {
 	Image imgCaisse;
 	Image imgBut;
 	
-	static final int TAILLE_CASE = 20;
+	public static final int TAILLE_CASE = 20;
 
 	public NiveauGraphique(Jeu jeu) {
 		// Chargement de l'image de la même manière que le fichier de niveaux

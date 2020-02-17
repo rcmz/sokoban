@@ -10,7 +10,10 @@ public class InterfaceGraphique implements Runnable {
 		Jeu jeu = new Jeu();
 		jeu.prochainNiveau();
 		
-		frame.add(new NiveauGraphique(jeu));
+		NiveauGraphique niveauGraphique = new NiveauGraphique(jeu);
+		frame.add(niveauGraphique);
+		
+		niveauGraphique.addMouseListener(new EcouteurDeSouris(jeu.niveau(), niveauGraphique));
 
 		// Un clic sur le bouton de fermeture clos l'application
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

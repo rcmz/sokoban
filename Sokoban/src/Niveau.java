@@ -3,9 +3,11 @@ import java.util.*;
 class Niveau {
     private String m_nom;
     private char[][] m_cases;
+    private int[] posPousseur;
 
     Niveau() {
         m_cases = new char[0][0];
+        posPousseur = new int[2];
     }
 
     private void redimensionnerCasesSiNecessaire(int l, int c) {
@@ -51,6 +53,7 @@ class Niveau {
     void ajoutePousseur(int i, int j) {
         redimensionnerCasesSiNecessaire(i, j);
         m_cases[i][j] = aBut(i, j) ? '+' : '@';
+        posPousseur = new int[] {i,j};
     }
 
     void ajouteCaisse(int i, int j) {
@@ -93,5 +96,117 @@ class Niveau {
 
     boolean aCaisse(int i, int j) {
         return m_cases[i][j] == '$' || m_cases[i][j] == '*';
+    }
+    
+    void movePousseur(int caseX, int caseY) {
+    	if (onPousseur(caseX+1, caseY)) {
+    		move(caseX, caseY, -1, 0);
+    	} else if (onPousseur(caseX-1, caseY)) {
+    		move(caseX, caseY, 1, 0);
+    	} else if (onPousseur(caseX, caseY+1)) {
+    		move(caseX, caseY, 0, -1);
+    	} else if (onPousseur(caseX, caseY-1)) {
+    		move(caseX, caseY, 0, 1);
+    	} else {
+    		throw new IllegalStateException();
+    	}
+	}
+    
+    boolean onPousseur(int x, int y) {
+    	return (posPousseur[0] == x && posPousseur[1] == y);
+    }
+    
+    void move(int caseX, int caseY, int gd, int hb) {
+    	if (m_cases[caseX][caseY] == '$') {
+			if (m_cases[caseX+gd][caseY+hb] == '.' || m_cases[caseX+gd][caseY+hb] == ' ') {
+				boolean addGoal = false;
+				
+				if (aBut(posPousseur[0], posPousseur[1])) {
+					addGoal = true;
+				}
+				
+				videCase(posPousseur[0], posPousseur[1]);
+				
+				if (addGoal) {
+					ajouteBut(posPousseur[0], posPousseur[1]);
+				}
+				
+				ajoutePousseur(caseX, caseY);
+				ajouteCaisse(caseX+gd, caseY+hb);
+				
+				posPousseur[0] = caseX;
+				posPousseur[1] = caseY;
+			}
+		}
+		else if (m_cases[caseX][caseY] == '*') {
+			if (m_cases[caseX+gd][caseY+hb] == '.' || m_cases[caseX+gd][caseY+hb] == ' ') {
+				boolean addGoalP = false;
+				boolean addGoalN = false;
+				
+				if (aBut(posPousseur[0], posPousseur[1])) {
+					addGoalP = true;
+				}
+				
+				videCase(posPousseur[0], posPousseur[1]);
+				
+				if (addGoalP) {
+					ajouteBut(posPousseur[0], posPousseur[1]);
+				}
+				
+				if (aBut(caseX, caseY)) {
+					addGoalN = true;
+				}
+				
+				videCase(caseX, caseY);
+				
+				ajoutePousseur(caseX, caseY);
+				
+				if (addGoalN) {
+					ajouteBut(caseX, caseY);
+				}
+				
+				ajouteCaisse(caseX+gd, caseY+hb);
+				
+				posPousseur[0] = caseX;
+				posPousseur[1] = caseY;
+			}
+		}
+		else if (m_cases[caseX][caseY] == '.') {
+			boolean addGoal = false;
+			
+			if (aBut(posPousseur[0], posPousseur[1])) {
+				addGoal = true;
+			}
+			
+			videCase(posPousseur[0], posPousseur[1]);
+			
+			if (addGoal) {
+				ajouteBut(posPousseur[0], posPousseur[1]);
+			}
+			
+			ajoutePousseur(caseX, caseY);
+			ajouteBut(caseX, caseY);
+			
+			posPousseur[0] = caseX;
+			posPousseur[1] = caseY;
+		}
+		else if (m_cases[caseX][caseY] == ' ') {
+			boolean addGoal = false;
+			
+			if (aBut(posPousseur[0], posPousseur[1])) {
+				addGoal = true;
+			}
+			
+			videCase(posPousseur[0], posPousseur[1]);
+			
+			if (addGoal) {
+				ajouteBut(posPousseur[0], posPousseur[1]);
+			}
+			
+			ajoutePousseur(caseX, caseY);
+			
+			posPousseur[0] = caseX;
+			posPousseur[1] = caseY;
+		}
     }
 }
