@@ -8,7 +8,7 @@ public class Jeu {
 		InputStream inputStream = null;
 		
 		try {
-			inputStream = new FileInputStream("/home/r/richeran/git/sokoban/Sokoban/src/niveaux.txt");
+			inputStream = new FileInputStream(Paths.WINDOWS_QUENTIN + "src\\niveaux.txt");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
