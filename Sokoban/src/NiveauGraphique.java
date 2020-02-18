@@ -78,16 +78,26 @@ class NiveauGraphique extends JComponent {
 		// On affiche une petite image au milieu
 		for (int i = 0; i < this.jeu.niveau().lignes(); i++) {
 			for (int j = 0; j < this.jeu.niveau().colonnes(); j++) {
-				Image img = imgSol;
+				Image img = null;
 				
 				if (this.jeu.niveau().aMur(i, j)) {
 					img = imgMur;
 				} else if (this.jeu.niveau().aBut(i, j)) {
-					img = imgBut;
+					if (this.jeu.niveau().aCaisse(i, j)) {
+						img = imgCaisseSurBut;
+					} else if (this.jeu.niveau().aPousseur(i, j)){
+						drawable.drawImage(imgBut, j*TAILLE_CASE, i*TAILLE_CASE, TAILLE_CASE, TAILLE_CASE, null);
+						img = imgPousseur;
+					} else {
+						img = imgBut;
+					}
 				} else if (this.jeu.niveau().aPousseur(i, j)) {
+					drawable.drawImage(imgSol, j*TAILLE_CASE, i*TAILLE_CASE, TAILLE_CASE, TAILLE_CASE, null);
 					img = imgPousseur;
 				} else if (this.jeu.niveau().aCaisse(i, j)) {
 					img = imgCaisse;
+				} else {
+					img = imgSol;
 				}
 				
 				drawable.drawImage(img, j*TAILLE_CASE, i*TAILLE_CASE, TAILLE_CASE, TAILLE_CASE, null);

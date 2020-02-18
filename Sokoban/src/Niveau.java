@@ -42,28 +42,28 @@ class Niveau {
 
     void videCase(int i, int j) {
         redimensionnerCasesSiNecessaire(i, j);
-        m_cases[i][j] = ' ';
+        m_cases[i][j] = EnumSymboles.SOL;
     }
 
     void ajouteMur(int i, int j) {
         redimensionnerCasesSiNecessaire(i, j);
-        m_cases[i][j] = '#';
+        m_cases[i][j] = EnumSymboles.MUR;
     }
 
     void ajoutePousseur(int i, int j) {
         redimensionnerCasesSiNecessaire(i, j);
-        m_cases[i][j] = aBut(i, j) ? '+' : '@';
+        m_cases[i][j] = aBut(i, j) ? EnumSymboles.POUSSEUR_SUR_BUT : EnumSymboles.POUSSEUR;
         posPousseur = new int[] {i,j};
     }
 
     void ajouteCaisse(int i, int j) {
         redimensionnerCasesSiNecessaire(i, j);
-        m_cases[i][j] = aBut(i, j) ? '*' : '$';
+        m_cases[i][j] = aBut(i, j) ? EnumSymboles.CAISSE_SUR_BUT : EnumSymboles.CAISSE;
     }
 
     void ajouteBut(int i, int j) {
         redimensionnerCasesSiNecessaire(i, j);
-        m_cases[i][j] = aPousseur(i, j) ? '+' : aCaisse(i, j) ? '*' : '.';
+        m_cases[i][j] = aPousseur(i, j) ? EnumSymboles.POUSSEUR_SUR_BUT : aCaisse(i, j) ? EnumSymboles.CAISSE_SUR_BUT : EnumSymboles.BUT;
     }
 
     int lignes() {
@@ -79,23 +79,23 @@ class Niveau {
     }
 
     boolean estVide(int i, int j) {
-        return m_cases[i][j] == ' ';
+        return m_cases[i][j] == EnumSymboles.SOL;
     }
 
     boolean aMur(int i, int j) {
-        return m_cases[i][j] == '#';
+        return m_cases[i][j] == EnumSymboles.MUR;
     }
 
     boolean aBut(int i, int j) {
-        return m_cases[i][j] == '.' || m_cases[i][j] == '*' || m_cases[i][j] == '+';
+        return m_cases[i][j] == EnumSymboles.BUT || m_cases[i][j] == EnumSymboles.CAISSE_SUR_BUT || m_cases[i][j] == EnumSymboles.POUSSEUR_SUR_BUT;
     }
 
     boolean aPousseur(int i, int j) {
-        return m_cases[i][j] == '@' || m_cases[i][j] == '+';
+        return m_cases[i][j] == EnumSymboles.POUSSEUR || m_cases[i][j] == EnumSymboles.POUSSEUR_SUR_BUT;
     }
 
     boolean aCaisse(int i, int j) {
-        return m_cases[i][j] == '$' || m_cases[i][j] == '*';
+        return m_cases[i][j] == EnumSymboles.CAISSE || m_cases[i][j] == EnumSymboles.CAISSE_SUR_BUT;
     }
     
     void movePousseur(int caseX, int caseY) {
