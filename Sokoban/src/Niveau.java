@@ -208,13 +208,9 @@ class Niveau {
 			posPousseur[0] = caseX;
 			posPousseur[1] = caseY;
 		}
-    	
-    	if (lvlIsFinished()) {
-    		
-    	}
     }
     
-    private boolean lvlIsFinished() {
+    public boolean lvlIsFinished() {
     	boolean lvlIsFinished = true;
     	
     	for (int i=0; i < lignes(); i++) {

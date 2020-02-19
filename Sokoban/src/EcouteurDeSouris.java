@@ -47,6 +47,16 @@ public class EcouteurDeSouris implements MouseListener {
 		} catch (IllegalStateException ex) {
 			System.out.println("Veuillez cliquer sur une case adjacente au pousseur !");
 		}
+		
+		if (niveau.lvlIsFinished()) {
+			if (niveauGraphique.jeu.prochainNiveau()) {
+				niveauGraphique.repaint();
+			}
+			else {
+				System.out.println("Vous avez terminé tous les niveaux !");
+				System.exit(0);
+			}
+		}
 	}
 	
 	// Toutes les mÃ©thodes qui suivent font partie de l'interface. Si nous ne

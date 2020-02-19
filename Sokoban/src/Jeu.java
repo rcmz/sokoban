@@ -22,6 +22,6 @@ public class Jeu {
 	
 	public boolean prochainNiveau() {
 		this.niveau = lecteurNiveau.lisProchainNiveau();
-		return this.lecteurNiveau != null;
+		return this.niveau != null;
 	}
 }
