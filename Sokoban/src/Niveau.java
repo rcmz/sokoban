@@ -208,5 +208,30 @@ class Niveau {
 			posPousseur[0] = caseX;
 			posPousseur[1] = caseY;
 		}
+    	
+    	if (lvlIsFinished()) {
+    		
+    	}
+    }
+    
+    private boolean lvlIsFinished() {
+    	boolean lvlIsFinished = true;
+    	
+    	for (int i=0; i < lignes(); i++) {
+    		for (int j=0; j < colonnes(); j++) {
+    			if (aCaisse(i,j)) {
+    				if (!aBut(i,j)) {
+    					lvlIsFinished = false;
+    					break;
+    				}
+    			}
+    		}
+    		
+    		if (!lvlIsFinished) {
+    			break;
+    		}
+    	}
+    	
+    	return lvlIsFinished;
     }
 }
