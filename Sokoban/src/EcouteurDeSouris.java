@@ -42,7 +42,7 @@ public class EcouteurDeSouris implements MouseListener {
 	public void mousePressed(MouseEvent e) {
 		//System.out.println("Le bouton de la souris a été pressé en (" + e.getX() + ", " + e.getY() + ")");
 		try {
-			niveau.movePousseur(e.getY() / NiveauGraphique.TAILLE_CASE, e.getX() / NiveauGraphique.TAILLE_CASE);
+			niveau.movePousseur(e.getY() / niveauGraphique.getTailleCase(), e.getX() / niveauGraphique.getTailleCase());
 			niveauGraphique.repaint();
 		} catch (IllegalStateException ex) {
 			System.out.println("Veuillez cliquer sur une case adjacente au pousseur !");
