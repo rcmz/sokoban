@@ -27,27 +27,27 @@ class LecteurNiveau {
 
                 for (int j = 0; j < ligne.length(); j++) {
                     switch (ligne.charAt(j)) {
-                        case ' ':
+                        case EnumSymboles.SOL:
                             niveau.videCase(i, j);
                             break;
-                        case '#':
+                        case EnumSymboles.MUR:
                             niveau.ajouteMur(i, j);
                             break;
-                        case '@':
+                        case EnumSymboles.POUSSEUR:
                             niveau.ajoutePousseur(i, j);
                             break;
-                        case '+':
+                        case EnumSymboles.POUSSEUR_SUR_BUT:
                             niveau.ajoutePousseur(i, j);
                             niveau.ajouteBut(i, j);
                             break;
-                        case '$':
+                        case EnumSymboles.CAISSE:
                             niveau.ajouteCaisse(i, j);
                             break;
-                        case '*':
+                        case EnumSymboles.CAISSE_SUR_BUT:
                             niveau.ajouteCaisse(i, j);
                             niveau.ajouteBut(i, j);
                             break;
-                        case '.':
+                        case EnumSymboles.BUT:
                             niveau.ajouteBut(i, j);
                             break;
                     }
