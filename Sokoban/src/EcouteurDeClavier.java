@@ -1,13 +1,27 @@
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
+import javax.swing.JFrame;
 
 class EcouteurDeClavier implements KeyListener {
 	private Niveau niveau;
 	private NiveauGraphique niveauGraphique;
+	private JFrame frame;
+	private boolean maximized;
 	
-	EcouteurDeClavier(Niveau niveau, NiveauGraphique niveauGraphique) {
+	EcouteurDeClavier(Niveau niveau, NiveauGraphique niveauGraphique, JFrame frame) {
 		this.niveau = niveau;
 		this.niveauGraphique = niveauGraphique;
+		this.frame = frame;
+		this.maximized = false;
+	}
+	
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	@Override
@@ -25,10 +39,10 @@ class EcouteurDeClavier implements KeyListener {
 		} else if (codeTouche == EnumSymboles.FLECHE_GAUCHE || codeTouche == EnumSymboles.FLECHE_DROITE || codeTouche == EnumSymboles.FLECHE_HAUT || codeTouche == EnumSymboles.FLECHE_BAS) {
 			movePousseur(codeTouche);
 		} else if (codeTouche == EnumSymboles.ECHAP) {
-			//TODO A implémenter
+			toggleFullScreen();
 		}
 	}
-	
+
 	private void movePousseur(int touche) {
 		try {
 			niveau.movePousseur(touche);
@@ -47,11 +61,17 @@ class EcouteurDeClavier implements KeyListener {
 			}
 		}
 	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+	
+	private void toggleFullScreen() {
+		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice device = env.getDefaultScreenDevice();
+		if (maximized) {
+			device.setFullScreenWindow(null);
+			maximized = false;
+		} else {
+			device.setFullScreenWindow(frame);
+			maximized = true;
+		}
 	}
 
 }
