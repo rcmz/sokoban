@@ -42,8 +42,8 @@ class NiveauGraphique extends JComponent {
 	Image imgCaisse;
 	Image imgBut;
 	
-	private int TAILLE_CASE = 20;
-	
+	private int tailleCase = 20;
+
 	public NiveauGraphique(Jeu jeu) {
 		// Chargement de l'image de la même manière que le fichier de niveaux
 		try {
@@ -70,6 +70,8 @@ class NiveauGraphique extends JComponent {
 		// On recupere quelques infos provenant de la partie JComponent
 		int width = getSize().width;
 		int height = getSize().height;
+		
+		tailleCase = Math.min(width/this.jeu.niveau().colonnes(), height/this.jeu.niveau().lignes());
 
 		// On efface tout
 		drawable.setPaint(Color.white);
@@ -86,13 +88,13 @@ class NiveauGraphique extends JComponent {
 					if (this.jeu.niveau().aCaisse(i, j)) {
 						img = imgCaisseSurBut;
 					} else if (this.jeu.niveau().aPousseur(i, j)){
-						drawable.drawImage(imgBut, j*TAILLE_CASE, i*TAILLE_CASE, TAILLE_CASE, TAILLE_CASE, null);
+						drawable.drawImage(imgBut, j*tailleCase, i*tailleCase, tailleCase, tailleCase, null);
 						img = imgPousseur;
 					} else {
 						img = imgBut;
 					}
 				} else if (this.jeu.niveau().aPousseur(i, j)) {
-					drawable.drawImage(imgSol, j*TAILLE_CASE, i*TAILLE_CASE, TAILLE_CASE, TAILLE_CASE, null);
+					drawable.drawImage(imgSol, j*tailleCase, i*tailleCase, tailleCase, tailleCase, null);
 					img = imgPousseur;
 				} else if (this.jeu.niveau().aCaisse(i, j)) {
 					img = imgCaisse;
@@ -100,12 +102,12 @@ class NiveauGraphique extends JComponent {
 					img = imgSol;
 				}
 				
-				drawable.drawImage(img, j*TAILLE_CASE, i*TAILLE_CASE, TAILLE_CASE, TAILLE_CASE, null);
+				drawable.drawImage(img, j*tailleCase, i*tailleCase, tailleCase, tailleCase, null);
 			}
 		}
 	}
 
 	public int getTailleCase() {
-		return this.TAILLE_CASE;
+		return this.tailleCase;
 	}
 }

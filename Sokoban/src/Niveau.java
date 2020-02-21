@@ -112,6 +112,25 @@ class Niveau {
     	}
 	}
     
+    void movePousseur(int toucheCliquee) {
+    	switch(toucheCliquee) {
+    		case EnumSymboles.FLECHE_BAS:
+    			move(posPousseur[0]+1, posPousseur[1], 1, 0);
+    			break;
+    		case EnumSymboles.FLECHE_HAUT:
+    			move(posPousseur[0]-1, posPousseur[1], -1, 0);
+    			break;
+    		case EnumSymboles.FLECHE_GAUCHE:
+    			move(posPousseur[0], posPousseur[1]-1, 0, -1);
+    			break;
+    		case EnumSymboles.FLECHE_DROITE:
+    			move(posPousseur[0], posPousseur[1]+1, 0, 1);
+    			break;
+    		default:
+    			throw new IllegalStateException();
+    	}
+	}
+    
     boolean onPousseur(int x, int y) {
     	return (posPousseur[0] == x && posPousseur[1] == y);
     }
@@ -208,5 +227,26 @@ class Niveau {
 			posPousseur[0] = caseX;
 			posPousseur[1] = caseY;
 		}
+    }
+    
+    public boolean lvlIsFinished() {
+    	boolean lvlIsFinished = true;
+    	
+    	for (int i=0; i < lignes(); i++) {
+    		for (int j=0; j < colonnes(); j++) {
+    			if (aCaisse(i,j)) {
+    				if (!aBut(i,j)) {
+    					lvlIsFinished = false;
+    					break;
+    				}
+    			}
+    		}
+    		
+    		if (!lvlIsFinished) {
+    			break;
+    		}
+    	}
+    	
+    	return lvlIsFinished;
     }
 }
