@@ -42,18 +42,18 @@ class NiveauGraphique extends JComponent {
 	Image imgCaisse;
 	Image imgBut;
 	
-	public static final int TAILLE_CASE = 20;
-
+	private int TAILLE_CASE = 20;
+	
 	public NiveauGraphique(Jeu jeu) {
 		// Chargement de l'image de la même manière que le fichier de niveaux
 		try {
 			// Chargement d'une image utilisable dans Swing
-			this.imgSol = ImageIO.read(Configuration.charge(Paths.WINDOWS_QUENTIN + "Images\\Sol.png"));
-			this.imgPousseur = ImageIO.read(Configuration.charge(Paths.WINDOWS_QUENTIN + "Images\\Pousseur.png"));
-			this.imgMur = ImageIO.read(Configuration.charge(Paths.WINDOWS_QUENTIN + "Images\\Mur.png"));
-			this.imgCaisseSurBut = ImageIO.read(Configuration.charge(Paths.WINDOWS_QUENTIN + "Images\\CaisseSurBut.png"));
-			this.imgCaisse = ImageIO.read(Configuration.charge(Paths.WINDOWS_QUENTIN + "Images\\Caisse.png"));
-			this.imgBut = ImageIO.read(Configuration.charge(Paths.WINDOWS_QUENTIN + "Images\\But.png"));
+			this.imgSol = ImageIO.read(Configuration.charge(Paths.MANDELBROT_QUENTIN + "images/Sol.png"));
+			this.imgPousseur = ImageIO.read(Configuration.charge(Paths.MANDELBROT_QUENTIN + "images/Pousseur.png"));
+			this.imgMur = ImageIO.read(Configuration.charge(Paths.MANDELBROT_QUENTIN + "images/Mur.png"));
+			this.imgCaisseSurBut = ImageIO.read(Configuration.charge(Paths.MANDELBROT_QUENTIN + "images/CaisseSurBut.png"));
+			this.imgCaisse = ImageIO.read(Configuration.charge(Paths.MANDELBROT_QUENTIN + "images/Caisse.png"));
+			this.imgBut = ImageIO.read(Configuration.charge(Paths.MANDELBROT_QUENTIN + "images/But.png"));
 		} catch (Exception e) {
 			Configuration.instance().logger().severe("Impossible de charger l'image");
 			System.exit(1);
@@ -103,5 +103,9 @@ class NiveauGraphique extends JComponent {
 				drawable.drawImage(img, j*TAILLE_CASE, i*TAILLE_CASE, TAILLE_CASE, TAILLE_CASE, null);
 			}
 		}
+	}
+
+	public int getTailleCase() {
+		return this.TAILLE_CASE;
 	}
 }

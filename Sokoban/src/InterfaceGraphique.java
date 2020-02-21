@@ -1,3 +1,6 @@
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -21,8 +24,9 @@ public class InterfaceGraphique implements Runnable {
 		// On fixe la taille et on demarre
 		frame.setSize(500, 300);
 		frame.setVisible(true);
+		
 	}
-
+	
 	public static void main(String[] args) {
 		// Swing s'exécute dans un thread séparé. En aucun cas il ne faut accéder directement
 		// aux composants graphiques depuis le thread principal. Swing fournit la méthode

@@ -117,8 +117,8 @@ class Niveau {
     }
     
     void move(int caseX, int caseY, int gd, int hb) {
-    	if (m_cases[caseX][caseY] == '$') {
-			if (m_cases[caseX+gd][caseY+hb] == '.' || m_cases[caseX+gd][caseY+hb] == ' ') {
+    	if (m_cases[caseX][caseY] == EnumSymboles.CAISSE) {
+			if (m_cases[caseX+gd][caseY+hb] == EnumSymboles.BUT || m_cases[caseX+gd][caseY+hb] == EnumSymboles.SOL) {
 				boolean addGoal = false;
 				
 				if (aBut(posPousseur[0], posPousseur[1])) {
@@ -138,8 +138,8 @@ class Niveau {
 				posPousseur[1] = caseY;
 			}
 		}
-		else if (m_cases[caseX][caseY] == '*') {
-			if (m_cases[caseX+gd][caseY+hb] == '.' || m_cases[caseX+gd][caseY+hb] == ' ') {
+		else if (m_cases[caseX][caseY] == EnumSymboles.CAISSE_SUR_BUT) {
+			if (m_cases[caseX+gd][caseY+hb] == EnumSymboles.BUT || m_cases[caseX+gd][caseY+hb] == EnumSymboles.SOL) {
 				boolean addGoalP = false;
 				boolean addGoalN = false;
 				
@@ -171,7 +171,7 @@ class Niveau {
 				posPousseur[1] = caseY;
 			}
 		}
-		else if (m_cases[caseX][caseY] == '.') {
+		else if (m_cases[caseX][caseY] == EnumSymboles.BUT) {
 			boolean addGoal = false;
 			
 			if (aBut(posPousseur[0], posPousseur[1])) {
@@ -190,7 +190,7 @@ class Niveau {
 			posPousseur[0] = caseX;
 			posPousseur[1] = caseY;
 		}
-		else if (m_cases[caseX][caseY] == ' ') {
+		else if (m_cases[caseX][caseY] == EnumSymboles.SOL) {
 			boolean addGoal = false;
 			
 			if (aBut(posPousseur[0], posPousseur[1])) {
