@@ -4,6 +4,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.*;
 
 import javax.swing.JFrame;
 
@@ -30,12 +31,12 @@ public class EcouteurDeClavier implements KeyListener {
 		int codeTouche = e.getKeyCode();
 		//System.out.println(codeTouche);
 		
-		if (codeTouche == EnumSymboles.Q || codeTouche == EnumSymboles.A) {
+		if (codeTouche == EnumSymboles.QUITTER || codeTouche == EnumSymboles.QUITTER_BIS) {
 			System.out.println("Vous avez quitt� le jeu");
 			System.exit(0);
-		} else if (codeTouche == EnumSymboles.FLECHE_GAUCHE || codeTouche == EnumSymboles.FLECHE_DROITE || codeTouche == EnumSymboles.FLECHE_HAUT || codeTouche == EnumSymboles.FLECHE_BAS) {
+		} else if (codeTouche == EnumSymboles.GAUCHE || codeTouche == EnumSymboles.DROITE || codeTouche == EnumSymboles.HAUT || codeTouche == EnumSymboles.BAS) {
 			movePousseur(codeTouche);
-		} else if (codeTouche == EnumSymboles.ECHAP) {
+		} else if (codeTouche == EnumSymboles.PLEIN_ECRAN) {
 			niveauGraphique.toggleFullScreen();
 		} else if (codeTouche == EnumSymboles.NIVEAU_SUIVANT) {
 			if (jeu.prochainNiveau()) {

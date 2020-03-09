@@ -117,16 +117,16 @@ public class Niveau {
     
     public void movePousseur(int toucheCliquee) {
     	switch(toucheCliquee) {
-    		case EnumSymboles.FLECHE_BAS:
+    		case EnumSymboles.BAS:
     			move(posPousseur[0]+1, posPousseur[1], 1, 0);
     			break;
-    		case EnumSymboles.FLECHE_HAUT:
+    		case EnumSymboles.HAUT:
     			move(posPousseur[0]-1, posPousseur[1], -1, 0);
     			break;
-    		case EnumSymboles.FLECHE_GAUCHE:
+    		case EnumSymboles.GAUCHE:
     			move(posPousseur[0], posPousseur[1]-1, 0, -1);
     			break;
-    		case EnumSymboles.FLECHE_DROITE:
+    		case EnumSymboles.DROITE:
     			move(posPousseur[0], posPousseur[1]+1, 0, 1);
     			break;
     		default:
