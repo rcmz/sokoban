@@ -1,11 +1,14 @@
+package modele;
 import java.util.*;
 
-class Niveau {
+import controleur.EnumSymboles;
+
+public class Niveau {
     private String m_nom;
     private char[][] m_cases;
     private int[] posPousseur;
 
-    Niveau() {
+    public Niveau() {
         m_cases = new char[0][0];
         posPousseur = new int[2];
     }
@@ -36,69 +39,69 @@ class Niveau {
         }
     }
 
-    void fixeNom(String nom) {
+    public void fixeNom(String nom) {
         m_nom = nom;
     }
 
-    void videCase(int i, int j) {
+    public void videCase(int i, int j) {
         redimensionnerCasesSiNecessaire(i, j);
         m_cases[i][j] = EnumSymboles.SOL;
     }
 
-    void ajouteMur(int i, int j) {
+    public void ajouteMur(int i, int j) {
         redimensionnerCasesSiNecessaire(i, j);
         m_cases[i][j] = EnumSymboles.MUR;
     }
 
-    void ajoutePousseur(int i, int j) {
+    public void ajoutePousseur(int i, int j) {
         redimensionnerCasesSiNecessaire(i, j);
         m_cases[i][j] = aBut(i, j) ? EnumSymboles.POUSSEUR_SUR_BUT : EnumSymboles.POUSSEUR;
         posPousseur = new int[] {i,j};
     }
 
-    void ajouteCaisse(int i, int j) {
+    public void ajouteCaisse(int i, int j) {
         redimensionnerCasesSiNecessaire(i, j);
         m_cases[i][j] = aBut(i, j) ? EnumSymboles.CAISSE_SUR_BUT : EnumSymboles.CAISSE;
     }
 
-    void ajouteBut(int i, int j) {
+    public void ajouteBut(int i, int j) {
         redimensionnerCasesSiNecessaire(i, j);
         m_cases[i][j] = aPousseur(i, j) ? EnumSymboles.POUSSEUR_SUR_BUT : aCaisse(i, j) ? EnumSymboles.CAISSE_SUR_BUT : EnumSymboles.BUT;
     }
 
-    int lignes() {
+    public int lignes() {
         return m_cases.length;
     }
 
-    int colonnes() {
+    public int colonnes() {
         return lignes() == 0 ? 0 : m_cases[0].length;
     }
 
-    String nom() {
+    public String nom() {
         return m_nom;
     }
 
-    boolean estVide(int i, int j) {
+    public boolean estVide(int i, int j) {
         return m_cases[i][j] == EnumSymboles.SOL;
     }
 
-    boolean aMur(int i, int j) {
+    public boolean aMur(int i, int j) {
         return m_cases[i][j] == EnumSymboles.MUR;
     }
 
-    boolean aBut(int i, int j) {
+    public boolean aBut(int i, int j) {
         return m_cases[i][j] == EnumSymboles.BUT || m_cases[i][j] == EnumSymboles.CAISSE_SUR_BUT || m_cases[i][j] == EnumSymboles.POUSSEUR_SUR_BUT;
     }
 
-    boolean aPousseur(int i, int j) {
+    public boolean aPousseur(int i, int j) {
         return m_cases[i][j] == EnumSymboles.POUSSEUR || m_cases[i][j] == EnumSymboles.POUSSEUR_SUR_BUT;
     }
 
-    boolean aCaisse(int i, int j) {
+    public boolean aCaisse(int i, int j) {
         return m_cases[i][j] == EnumSymboles.CAISSE || m_cases[i][j] == EnumSymboles.CAISSE_SUR_BUT;
     }
     
-    void movePousseur(int caseX, int caseY) {
+    public void movePousseur(int caseX, int caseY) {
     	if (onPousseur(caseX+1, caseY)) {
     		move(caseX, caseY, -1, 0);
     	} else if (onPousseur(caseX-1, caseY)) {
@@ -112,7 +115,7 @@ class Niveau {
     	}
 	}
     
-    void movePousseur(int toucheCliquee) {
+    public void movePousseur(int toucheCliquee) {
     	switch(toucheCliquee) {
     		case EnumSymboles.FLECHE_BAS:
     			move(posPousseur[0]+1, posPousseur[1], 1, 0);
@@ -131,11 +134,11 @@ class Niveau {
     	}
 	}
     
-    boolean onPousseur(int x, int y) {
+    public boolean onPousseur(int x, int y) {
     	return (posPousseur[0] == x && posPousseur[1] == y);
     }
     
-    void move(int caseX, int caseY, int gd, int hb) {
+    public void move(int caseX, int caseY, int gd, int hb) {
     	if (m_cases[caseX][caseY] == EnumSymboles.CAISSE) {
 			if (m_cases[caseX+gd][caseY+hb] == EnumSymboles.BUT || m_cases[caseX+gd][caseY+hb] == EnumSymboles.SOL) {
 				boolean addGoal = false;

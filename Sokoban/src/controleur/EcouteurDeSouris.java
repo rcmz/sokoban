@@ -1,3 +1,4 @@
+package controleur;
 /*
  * Sokoban - Encore une nouvelle version (à but pédagogique) du célèbre jeu
  * Copyright (C) 2018 Guillaume Huard
@@ -24,17 +25,19 @@
  *          Domaine universitaire
  *          38401 Saint Martin d'Hères
  */
-
-import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import modele.Jeu;
+import modele.Niveau;
+import vue.NiveauGraphique;
+
 public class EcouteurDeSouris implements MouseListener {
-	private Niveau niveau;
+	private Jeu jeu;
 	private NiveauGraphique niveauGraphique;
 	
-	EcouteurDeSouris(Niveau niveau, NiveauGraphique niveauGraphique) {
-		this.niveau = niveau;
+	public EcouteurDeSouris(Jeu jeu, NiveauGraphique niveauGraphique) {
+		this.jeu = jeu;
 		this.niveauGraphique = niveauGraphique;
 	}
 	
@@ -42,14 +45,14 @@ public class EcouteurDeSouris implements MouseListener {
 	public void mousePressed(MouseEvent e) {
 		//System.out.println("Le bouton de la souris a été pressé en (" + e.getX() + ", " + e.getY() + ")");
 		try {
-			niveau.movePousseur(e.getY() / niveauGraphique.getTailleCase(), e.getX() / niveauGraphique.getTailleCase());
+			jeu.niveau().movePousseur(e.getY() / niveauGraphique.getTailleCase(), e.getX() / niveauGraphique.getTailleCase());
 			niveauGraphique.repaint();
 		} catch (IllegalStateException ex) {
 			System.out.println("Veuillez cliquer sur une case adjacente au pousseur !");
 		}
 		
-		if (niveau.lvlIsFinished()) {
-			if (niveauGraphique.jeu.prochainNiveau()) {
+		if (jeu.niveau().lvlIsFinished()) {
+			if (jeu.prochainNiveau()) {
 				niveauGraphique.repaint();
 			}
 			else {

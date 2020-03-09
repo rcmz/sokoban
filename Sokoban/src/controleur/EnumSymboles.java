@@ -1,3 +1,5 @@
+package controleur;
+
 public class EnumSymboles {
 	public static final char SOL = ' ';
 	public static final char MUR = '#';
@@ -14,4 +16,6 @@ public class EnumSymboles {
 	public static final int ECHAP = 27;
 	public static final int A = 65;
 	public static final int Q = 81;
+	public static final int NIVEAU_SUIVANT = 78; // N
+	// TODO public static final int NIVEAU_PRECEDENT = 80; // P
 }

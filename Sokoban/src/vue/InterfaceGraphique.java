@@ -1,3 +1,4 @@
+package vue;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.GraphicsDevice;
@@ -5,6 +6,10 @@ import java.awt.GraphicsEnvironment;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+
+import controleur.EcouteurDeClavier;
+import controleur.EcouteurDeSouris;
+import modele.Jeu;
 
 public class InterfaceGraphique implements Runnable {	
 	private boolean maximized = false;
@@ -20,8 +25,8 @@ public class InterfaceGraphique implements Runnable {
 		NiveauGraphique niveauGraphique = new NiveauGraphique(jeu);
 		frame.add(niveauGraphique);
 		
-		niveauGraphique.addMouseListener(new EcouteurDeSouris(jeu.niveau(), niveauGraphique));
-		frame.addKeyListener(new EcouteurDeClavier(jeu.niveau(), niveauGraphique, frame));
+		niveauGraphique.addMouseListener(new EcouteurDeSouris(jeu, niveauGraphique));
+		frame.addKeyListener(new EcouteurDeClavier(jeu, niveauGraphique));
 
 		// Un clic sur le bouton de fermeture clos l'application
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

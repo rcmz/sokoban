@@ -1,3 +1,4 @@
+package vue;
 /*
  * Sokoban - Encore une nouvelle version (à but pédagogique) du célèbre jeu
  * Copyright (C) 2018 Guillaume Huard
@@ -26,23 +27,25 @@
  */
 
 import global.Configuration;
+import global.Paths;
+import modele.Jeu;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.SwingUtilities;
 import java.awt.*;
 import java.io.InputStream;
 
-class NiveauGraphique extends JComponent {
+public class NiveauGraphique extends JComponent {
 	Jeu jeu;
-	
 	Image imgSol;
 	Image imgPousseur;
 	Image imgMur;
 	Image imgCaisseSurBut;
 	Image imgCaisse;
 	Image imgBut;
-	
 	private int tailleCase = 20;
+	private boolean maximized;
 
 	public NiveauGraphique(Jeu jeu) {
 		// Chargement de l'image de la même manière que le fichier de niveaux
@@ -60,6 +63,7 @@ class NiveauGraphique extends JComponent {
 		}
 		
 		this.jeu = jeu;
+		this.maximized = false;
 	}
 
 	public void paintComponent(Graphics g) {
@@ -80,6 +84,7 @@ class NiveauGraphique extends JComponent {
 		// On affiche une petite image au milieu
 		for (int i = 0; i < this.jeu.niveau().lignes(); i++) {
 			for (int j = 0; j < this.jeu.niveau().colonnes(); j++) {
+				drawable.drawImage(imgSol, j*tailleCase, i*tailleCase, tailleCase, tailleCase, null);
 				Image img = null;
 				
 				if (this.jeu.niveau().aMur(i, j)) {
@@ -94,12 +99,9 @@ class NiveauGraphique extends JComponent {
 						img = imgBut;
 					}
 				} else if (this.jeu.niveau().aPousseur(i, j)) {
-					drawable.drawImage(imgSol, j*tailleCase, i*tailleCase, tailleCase, tailleCase, null);
 					img = imgPousseur;
 				} else if (this.jeu.niveau().aCaisse(i, j)) {
 					img = imgCaisse;
-				} else {
-					img = imgSol;
 				}
 				
 				drawable.drawImage(img, j*tailleCase, i*tailleCase, tailleCase, tailleCase, null);
@@ -109,5 +111,17 @@ class NiveauGraphique extends JComponent {
 
 	public int getTailleCase() {
 		return this.tailleCase;
+	}
+	
+	public void toggleFullScreen() {
+		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice device = env.getDefaultScreenDevice();
+		if (maximized) {
+			device.setFullScreenWindow(null);
+			maximized = false;
+		} else {
+			device.setFullScreenWindow((JFrame) SwingUtilities.getWindowAncestor(this));
+			maximized = true;
+		}
 	}
 }

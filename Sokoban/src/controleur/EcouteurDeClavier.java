@@ -1,3 +1,4 @@
+package controleur;
 import java.awt.GraphicsDevice;
 
 import java.awt.GraphicsEnvironment;
@@ -6,17 +7,16 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 
-class EcouteurDeClavier implements KeyListener {
-	private Niveau niveau;
+import modele.Jeu;
+import vue.NiveauGraphique;
+
+public class EcouteurDeClavier implements KeyListener {
+	private Jeu jeu;
 	private NiveauGraphique niveauGraphique;
-	private JFrame frame;
-	private boolean maximized;
 	
-	EcouteurDeClavier(Niveau niveau, NiveauGraphique niveauGraphique, JFrame frame) {
-		this.niveau = niveau;
+	public EcouteurDeClavier(Jeu jeu, NiveauGraphique niveauGraphique) {
+		this.jeu = jeu;
 		this.niveauGraphique = niveauGraphique;
-		this.frame = frame;
-		this.maximized = false;
 	}
 	
 	@Override
@@ -28,46 +28,45 @@ class EcouteurDeClavier implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int codeTouche = e.getKeyCode();
+		//System.out.println(codeTouche);
 		
 		if (codeTouche == EnumSymboles.Q || codeTouche == EnumSymboles.A) {
-			System.out.println("Vous avez quitté le jeu");
+			System.out.println("Vous avez quittï¿½ le jeu");
 			System.exit(0);
 		} else if (codeTouche == EnumSymboles.FLECHE_GAUCHE || codeTouche == EnumSymboles.FLECHE_DROITE || codeTouche == EnumSymboles.FLECHE_HAUT || codeTouche == EnumSymboles.FLECHE_BAS) {
 			movePousseur(codeTouche);
 		} else if (codeTouche == EnumSymboles.ECHAP) {
-			toggleFullScreen();
+			niveauGraphique.toggleFullScreen();
+		} else if (codeTouche == EnumSymboles.NIVEAU_SUIVANT) {
+			if (jeu.prochainNiveau()) {
+				niveauGraphique.repaint();
+			}
+			else {
+				System.out.println("Vous avez terminï¿½ tous les niveaux !");
+				System.exit(0);
+			}
 		}
 	}
 
 	private void movePousseur(int touche) {
 		try {
-			niveau.movePousseur(touche);
+			jeu.niveau().movePousseur(touche);
 			niveauGraphique.repaint();
 		} catch (IllegalStateException ex) {
-			System.out.println("La touche cliquée n'a aucune fonction.");
+			System.out.println("La touche cliquï¿½e n'a aucune fonction.");
 		}
 		
-		if (niveau.lvlIsFinished()) {
-			if (niveauGraphique.jeu.prochainNiveau()) {
+		if (jeu.niveau().lvlIsFinished()) {
+			if (jeu.prochainNiveau()) {
 				niveauGraphique.repaint();
 			}
 			else {
-				System.out.println("Vous avez terminé tous les niveaux !");
+				System.out.println("Vous avez terminï¿½ tous les niveaux !");
 				System.exit(0);
 			}
 		}
 	}
 	
-	private void toggleFullScreen() {
-		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice device = env.getDefaultScreenDevice();
-		if (maximized) {
-			device.setFullScreenWindow(null);
-			maximized = false;
-		} else {
-			device.setFullScreenWindow(frame);
-			maximized = true;
-		}
-	}
+
 
 }

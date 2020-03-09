@@ -1,7 +1,11 @@
+package modele;
+
 import java.util.*;
+
+import controleur.EnumSymboles;
 import java.io.*;
 
-class LecteurNiveau {
+public class LecteurNiveau {
     Scanner m_scanner;
 
     LecteurNiveau(InputStream stream) {

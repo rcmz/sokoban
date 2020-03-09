@@ -1,4 +1,7 @@
+package modele;
 import java.io.*;
+
+import global.Paths;
 
 public class Jeu {
 	private Niveau niveau;
