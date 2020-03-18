@@ -9,11 +9,10 @@ import javax.swing.SwingUtilities;
 
 import controleur.EcouteurDeClavier;
 import controleur.EcouteurDeSouris;
+import controleur.RandomIA;
 import modele.Jeu;
 
 public class InterfaceGraphique implements Runnable {	
-	private boolean maximized = false;
-	
 	public void run() {
 		// Creation d'une fenetre
 		JFrame frame = new JFrame("sokoban");
@@ -27,7 +26,7 @@ public class InterfaceGraphique implements Runnable {
 		
 		niveauGraphique.addMouseListener(new EcouteurDeSouris(jeu, niveauGraphique));
 		frame.addKeyListener(new EcouteurDeClavier(jeu, niveauGraphique));
-
+		
 		// Un clic sur le bouton de fermeture clos l'application
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -35,6 +34,7 @@ public class InterfaceGraphique implements Runnable {
 		frame.setSize(500, 300);
 		frame.setVisible(true);
 		
+		new RandomIA(niveauGraphique);
 	}
 	
 	public static void main(String[] args) {

@@ -29,6 +29,7 @@ package vue;
 import global.Configuration;
 import global.Paths;
 import modele.Jeu;
+import modele.Niveau;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -37,7 +38,7 @@ import java.awt.*;
 import java.io.InputStream;
 
 public class NiveauGraphique extends JComponent {
-	Jeu jeu;
+	public Jeu jeu;
 	Image imgSol;
 	Image imgPousseur;
 	Image imgMur;
@@ -45,18 +46,19 @@ public class NiveauGraphique extends JComponent {
 	Image imgCaisse;
 	Image imgBut;
 	private int tailleCase = 20;
+	public int etape = 0;
 	private boolean maximized;
 
 	public NiveauGraphique(Jeu jeu) {
 		// Chargement de l'image de la même manière que le fichier de niveaux
 		try {
 			// Chargement d'une image utilisable dans Swing
-			this.imgSol = ImageIO.read(Configuration.charge(Paths.MANDELBROT_QUENTIN + "images/Sol.png"));
-			this.imgPousseur = ImageIO.read(Configuration.charge(Paths.MANDELBROT_QUENTIN + "images/Pousseur.png"));
-			this.imgMur = ImageIO.read(Configuration.charge(Paths.MANDELBROT_QUENTIN + "images/Mur.png"));
-			this.imgCaisseSurBut = ImageIO.read(Configuration.charge(Paths.MANDELBROT_QUENTIN + "images/CaisseSurBut.png"));
-			this.imgCaisse = ImageIO.read(Configuration.charge(Paths.MANDELBROT_QUENTIN + "images/Caisse.png"));
-			this.imgBut = ImageIO.read(Configuration.charge(Paths.MANDELBROT_QUENTIN + "images/But.png"));
+			this.imgSol = ImageIO.read(Configuration.charge(Paths.WINDOWS_QUENTIN + "images/Sol.png"));
+			this.imgPousseur = ImageIO.read(Configuration.charge(Paths.WINDOWS_QUENTIN + "images/Pousseur.png"));
+			this.imgMur = ImageIO.read(Configuration.charge(Paths.WINDOWS_QUENTIN + "images/Mur.png"));
+			this.imgCaisseSurBut = ImageIO.read(Configuration.charge(Paths.WINDOWS_QUENTIN + "images/CaisseSurBut.png"));
+			this.imgCaisse = ImageIO.read(Configuration.charge(Paths.WINDOWS_QUENTIN + "images/Caisse.png"));
+			this.imgBut = ImageIO.read(Configuration.charge(Paths.WINDOWS_QUENTIN + "images/But.png"));
 		} catch (Exception e) {
 			Configuration.instance().logger().severe("Impossible de charger l'image");
 			System.exit(1);
@@ -111,6 +113,10 @@ public class NiveauGraphique extends JComponent {
 
 	public int getTailleCase() {
 		return this.tailleCase;
+	}
+	
+	public Niveau niveau() {
+		return this.jeu.niveau();
 	}
 	
 	public void toggleFullScreen() {

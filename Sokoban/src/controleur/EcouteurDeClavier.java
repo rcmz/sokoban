@@ -2,11 +2,13 @@ package controleur;
 import java.awt.GraphicsDevice;
 
 import java.awt.GraphicsEnvironment;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.*;
 
 import javax.swing.JFrame;
+import javax.swing.Timer;
 
 import modele.Jeu;
 import vue.NiveauGraphique;
@@ -14,10 +16,12 @@ import vue.NiveauGraphique;
 public class EcouteurDeClavier implements KeyListener {
 	private Jeu jeu;
 	private NiveauGraphique niveauGraphique;
+	private EcouteurTimer ecouteurTimer;
 	
 	public EcouteurDeClavier(Jeu jeu, NiveauGraphique niveauGraphique) {
 		this.jeu = jeu;
 		this.niveauGraphique = niveauGraphique;
+		//initTimer();
 	}
 	
 	@Override
@@ -68,6 +72,11 @@ public class EcouteurDeClavier implements KeyListener {
 		}
 	}
 	
-
-
+	private void initTimer() {
+		niveauGraphique.etape = 0;
+		ecouteurTimer = new EcouteurTimer(niveauGraphique);
+		Timer timer = new Timer(1000, ecouteurTimer);
+		timer.start();
+		niveauGraphique.repaint();
+	}
 }

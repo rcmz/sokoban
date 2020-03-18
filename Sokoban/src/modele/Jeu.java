@@ -11,7 +11,7 @@ public class Jeu {
 		InputStream inputStream = null;
 		
 		try {
-			inputStream = new FileInputStream(Paths.MANDELBROT_QUENTIN + "src/niveaux.txt");
+			inputStream = new FileInputStream(Paths.WINDOWS_QUENTIN + "src/niveaux.txt");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -27,4 +27,10 @@ public class Jeu {
 		this.niveau = lecteurNiveau.lisProchainNiveau();
 		return this.niveau != null;
 	}
+	
+	/*
+	public boolean niveauPrecedent() {
+		//TODO A implémenter
+	}
+	 */
 }

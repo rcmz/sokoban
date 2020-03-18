@@ -3,7 +3,7 @@ import java.util.*;
 
 import controleur.EnumSymboles;
 
-public class Niveau {
+public class Niveau implements Cloneable {
     private String m_nom;
     private char[][] m_cases;
     private int[] posPousseur;
@@ -99,6 +99,35 @@ public class Niveau {
 
     public boolean aCaisse(int i, int j) {
         return m_cases[i][j] == EnumSymboles.CAISSE || m_cases[i][j] == EnumSymboles.CAISSE_SUR_BUT;
+    }
+    
+    public void movePousseurRandomly() {
+    	int[] currentPosPousseur = posPousseur;    	
+        
+    	/*
+    		Tant qu'on n'a "pas de chance" sur la valeur du random, i.e. que la valeur renvoyée ne permet
+    		pas de déplacer le pousseur (mur a la case indiquée par exemple), on récupère une nouvelle
+    		valeur et on retest
+    	*/
+    	
+    	while (currentPosPousseur[0] == posPousseur[0] && currentPosPousseur[1] == posPousseur[1]) {
+	    	Random rand = new Random();
+	    	
+	    	int val = rand.nextInt() % 4;
+	    	val = (val < 0) ? val+4 : val;
+	    	
+	    	if (val == 0) {
+	    		move(posPousseur[0]-1, posPousseur[1], -1, 0);
+	    	} else if (val == 1) {
+	    		move(posPousseur[0]+1, posPousseur[1], 1, 0);
+	    	} else if (val == 2) {
+	    		move(posPousseur[0], posPousseur[1]-1, 0, -1);
+	    	} else if (val == 3) {
+	    		move(posPousseur[0], posPousseur[1]+1, 0, 1);
+	    	} else {
+	    		throw new IllegalStateException();
+	    	}
+    	}
     }
     
     public void movePousseur(int caseX, int caseY) {
@@ -251,5 +280,42 @@ public class Niveau {
     	}
     	
     	return lvlIsFinished;
+    }
+    
+    public Niveau clone() {
+    	Niveau newNiveau;
+    	
+    	try {
+    		newNiveau = (Niveau) super.clone();
+    		newNiveau.m_cases = deepCopyChar(this.m_cases);
+    		newNiveau.posPousseur = deepCopyInt(this.posPousseur);
+    		
+    		return newNiveau;
+    	} catch (CloneNotSupportedException e) {
+    		System.out.println("Impossible d'arriver ici mais bon");
+    		return null;
+    	}
+    }
+    
+    private char[][] deepCopyChar(char[][] prevArray) {
+    	char[][] newArray = new char[prevArray.length][prevArray[0].length];
+    	
+    	for (int i = 0; i < prevArray.length; i++) {
+    		for (int j = 0; j < prevArray[0].length; j++) {
+    			newArray[i][j] = prevArray[i][j];
+    		}
+    	}
+    	
+    	return newArray;
+    }
+    
+    private int[] deepCopyInt(int[] prevArray) {
+    	int[] newArray = new int[prevArray.length];
+    	
+    	for (int i = 0; i < prevArray.length; i++) {  		
+   			newArray[i] = prevArray[i];
+       	}
+    	
+    	return newArray;
     }
 }
