@@ -75,8 +75,8 @@ public class NiveauGraphique extends JComponent {
 		
 		this.jeu = jeu;
 		this.maximized = false;
-		this.animationPousseur = new Animation();
-		this.animationCaisse = new Animation();
+		this.animationPousseur = null;
+		this.animationCaisse = null;
 	}
 
 	public void paintComponent(Graphics g) {
@@ -113,7 +113,7 @@ public class NiveauGraphique extends JComponent {
 		for (int i = 0; i < this.jeu.niveau().lignes(); i++) {
 			for (int j = 0; j < this.jeu.niveau().colonnes(); j++) {
 				if (this.jeu.niveau().aCaisse(i, j)) {
-					if (animationCaisse.estA(i, j)) {
+					if (animationCaisse != null && animationCaisse.estA(i, j)) {
 						drawable.drawImage(imgCaisse, (int) ((j+animationCaisse.getX())*tailleCase), (int) ((i+animationCaisse.getY())*tailleCase), tailleCase, tailleCase, null);
 					} else {
 						drawable.drawImage(imgCaisse, j*tailleCase, i*tailleCase, tailleCase, tailleCase, null);
@@ -121,7 +121,12 @@ public class NiveauGraphique extends JComponent {
 				}
 				
 				if (this.jeu.niveau().aPousseur(i, j)) {
-					drawable.drawImage(imgPousseur, (int) ((j+animationPousseur.getX())*tailleCase), (int) ((i+animationPousseur.getY())*tailleCase), tailleCase, tailleCase, null);
+					if (animationPousseur != null) {
+						drawable.drawImage(imgPousseur, (int) ((j+animationPousseur.getX())*tailleCase), (int) ((i+animationPousseur.getY())*tailleCase), tailleCase, tailleCase, null);
+					} else {
+						drawable.drawImage(imgPousseur, j*tailleCase, i*tailleCase, tailleCase, tailleCase, null);
+					}
+					
 					showPossibilities(drawable, i, j);
 				}
 			}

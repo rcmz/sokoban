@@ -17,10 +17,6 @@ public class Animation implements ActionListener {
 	private int i = -1;
 	private int j = -1;
 	
-	public Animation() {
-		this.etape = (int) taille;
-	}
-	
 	public Animation(JComponent component, int direction) {
 		this.component = component;
 		this.direction = direction;

@@ -68,9 +68,12 @@ public class EcouteurDeClavier implements KeyListener {
 				niveauGraphique.setAnimationCaisse(new Animation(niveauGraphique, touche, pousseurY, pousseurX+2));
 			}
 			
-			jeu.niveau().movePousseur(touche);
-			
 			niveauGraphique.setAnimationPousseur(new Animation(niveauGraphique, touche));
+			
+			if (!jeu.niveau().movePousseur(touche)) {
+				niveauGraphique.setAnimationPousseur(null);
+				niveauGraphique.setAnimationCaisse(null);
+			}
 		} catch (IllegalStateException ex) {
 
 			niveauGraphique.repaint();

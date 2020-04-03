@@ -350,38 +350,34 @@ public class Niveau implements Cloneable {
     	return coup;
     }
     
-    public void movePousseur(int[] posPousseur) {
-    	movePousseur(posPousseur[0], posPousseur[1]);
+    public boolean movePousseur(int[] posPousseur) {
+    	return movePousseur(posPousseur[0], posPousseur[1]);
     }
     
-    public void movePousseur(int caseX, int caseY) {
+    public boolean movePousseur(int caseX, int caseY) {
     	if (onPousseur(caseX + 1, caseY)) {
-    		move(caseX, caseY, -1, 0);
+    		return move(caseX, caseY, -1, 0);
     	} else if (onPousseur(caseX - 1, caseY)) {
-    		move(caseX, caseY, 1, 0);
+    		return move(caseX, caseY, 1, 0);
     	} else if (onPousseur(caseX, caseY + 1)) {
-    		move(caseX, caseY, 0, -1);
+    		return move(caseX, caseY, 0, -1);
     	} else if (onPousseur(caseX, caseY - 1)) {
-    		move(caseX, caseY, 0, 1);
+    		return move(caseX, caseY, 0, 1);
     	} else {
     		throw new IllegalStateException();
     	}
 	}
     
-    public void movePousseur(int toucheCliquee) {
+    public boolean movePousseur(int toucheCliquee) {
     	switch(toucheCliquee) {
     		case EnumSymboles.BAS:
-    			move(posPousseur[0]+1, posPousseur[1], 1, 0);
-    			break;
+    			return move(posPousseur[0]+1, posPousseur[1], 1, 0);
     		case EnumSymboles.HAUT:
-    			move(posPousseur[0]-1, posPousseur[1], -1, 0);
-    			break;
+    			return move(posPousseur[0]-1, posPousseur[1], -1, 0);
     		case EnumSymboles.GAUCHE:
-    			move(posPousseur[0], posPousseur[1]-1, 0, -1);
-    			break;
+    			return move(posPousseur[0], posPousseur[1]-1, 0, -1);
     		case EnumSymboles.DROITE:
-    			move(posPousseur[0], posPousseur[1]+1, 0, 1);
-    			break;
+    			return move(posPousseur[0], posPousseur[1]+1, 0, 1);
     		default:
     			throw new IllegalStateException();
     	}
@@ -399,7 +395,9 @@ public class Niveau implements Cloneable {
     	return posPousseur[0];
     }
     
-    public void move(int caseX, int caseY, int gd, int hb) {
+    public boolean move(int caseX, int caseY, int gd, int hb) {
+    	boolean haseMoved = false;
+    	
     	if (m_cases[caseX][caseY] == EnumSymboles.CAISSE) {
 			if (m_cases[caseX+gd][caseY+hb] == EnumSymboles.BUT || m_cases[caseX+gd][caseY+hb] == EnumSymboles.SOL) {
 				boolean addGoal = false;
@@ -419,6 +417,7 @@ public class Niveau implements Cloneable {
 				
 				posPousseur[0] = caseX;
 				posPousseur[1] = caseY;
+				haseMoved = true;
 			}
 		}
 		else if (m_cases[caseX][caseY] == EnumSymboles.CAISSE_SUR_BUT) {
@@ -452,6 +451,7 @@ public class Niveau implements Cloneable {
 				
 				posPousseur[0] = caseX;
 				posPousseur[1] = caseY;
+				haseMoved = true;
 			}
 		}
 		else if (m_cases[caseX][caseY] == EnumSymboles.BUT) {
@@ -472,6 +472,7 @@ public class Niveau implements Cloneable {
 			
 			posPousseur[0] = caseX;
 			posPousseur[1] = caseY;
+			haseMoved = true;
 		}
 		else if (m_cases[caseX][caseY] == EnumSymboles.SOL) {
 			boolean addGoal = false;
@@ -490,7 +491,10 @@ public class Niveau implements Cloneable {
 			
 			posPousseur[0] = caseX;
 			posPousseur[1] = caseY;
+			haseMoved = true;
 		}
+    	
+    	return haseMoved;
     }
     
     public boolean lvlIsFinished() {
