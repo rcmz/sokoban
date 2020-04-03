@@ -27,14 +27,14 @@ public class InterfaceGraphique implements Runnable {
 		niveauGraphique.addMouseListener(new EcouteurDeSouris(jeu, niveauGraphique));
 		frame.addKeyListener(new EcouteurDeClavier(jeu, niveauGraphique));
 		
+		//new IAManager(new RandomIA(jeu.niveau().clone()), niveauGraphique);
+		
 		// Un clic sur le bouton de fermeture clos l'application
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// On fixe la taille et on demarre
 		frame.setSize(500, 300);
 		frame.setVisible(true);
-		
-		new RandomIA(niveauGraphique);
 	}
 	
 	public static void main(String[] args) {

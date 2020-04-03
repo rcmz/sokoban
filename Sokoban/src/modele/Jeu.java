@@ -11,7 +11,7 @@ public class Jeu {
 		InputStream inputStream = null;
 		
 		try {
-			inputStream = new FileInputStream(Paths.WINDOWS_QUENTIN + "src/niveaux.txt");
+			inputStream = new FileInputStream(Paths.LINUX_QUENTIN + "src/niveaux.txt");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -30,7 +30,7 @@ public class Jeu {
 	
 	/*
 	public boolean niveauPrecedent() {
-		//TODO A implémenter
+		//TODO A implï¿½menter
 	}
 	 */
 }

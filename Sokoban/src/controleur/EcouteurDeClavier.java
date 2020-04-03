@@ -57,7 +57,7 @@ public class EcouteurDeClavier implements KeyListener {
 		try {
 			jeu.niveau().movePousseur(touche);
 			niveauGraphique.repaint();
-		} catch (IllegalStateException ex) {
+		} catch (IllegalStateException e) {
 			System.out.println("La touche cliqu�e n'a aucune fonction.");
 		}
 		
@@ -69,6 +69,8 @@ public class EcouteurDeClavier implements KeyListener {
 				System.out.println("Vous avez termin� tous les niveaux !");
 				System.exit(0);
 			}
+		} else if (jeu.niveau().lvlIsBlocked()) {
+			System.out.println("Le niveau est bloqué, vous pouvez recommencer  ! =)");
 		}
 	}
 	
