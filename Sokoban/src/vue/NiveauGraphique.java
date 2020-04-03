@@ -59,14 +59,14 @@ public class NiveauGraphique extends JComponent {
 		// Chargement de l'image de la même manière que le fichier de niveaux
 		try {
 			// Chargement d'une image utilisable dans Swing
-			this.imgSol = ImageIO.read(Configuration.charge(Paths.LINUX_QUENTIN + "images/Sol.png"));
-			this.imgPousseur = ImageIO.read(Configuration.charge(Paths.LINUX_QUENTIN + "images/Pousseur.png"));
-			this.imgMur = ImageIO.read(Configuration.charge(Paths.LINUX_QUENTIN + "images/Mur.png"));
-			this.imgCaisseSurBut = ImageIO.read(Configuration.charge(Paths.LINUX_QUENTIN + "images/CaisseSurBut.png"));
-			this.imgCaisse = ImageIO.read(Configuration.charge(Paths.LINUX_QUENTIN + "images/Caisse.png"));
-			this.imgBut = ImageIO.read(Configuration.charge(Paths.LINUX_QUENTIN + "images/But.png"));
-			this.rouge = ImageIO.read(Configuration.charge(Paths.LINUX_QUENTIN + "images/Rouge.png"));
-			this.vert = ImageIO.read(Configuration.charge(Paths.LINUX_QUENTIN + "images/Vert.png"));
+			this.imgSol = ImageIO.read(Configuration.charge("images/Sol.png"));
+			this.imgPousseur = ImageIO.read(Configuration.charge("images/Pousseur.png"));
+			this.imgMur = ImageIO.read(Configuration.charge("images/Mur.png"));
+			this.imgCaisseSurBut = ImageIO.read(Configuration.charge("images/CaisseSurBut.png"));
+			this.imgCaisse = ImageIO.read(Configuration.charge("images/Caisse.png"));
+			this.imgBut = ImageIO.read(Configuration.charge("images/But.png"));
+			this.rouge = ImageIO.read(Configuration.charge("images/Rouge.png"));
+			this.vert = ImageIO.read(Configuration.charge("images/Vert.png"));
 			
 		} catch (Exception e) {
 			Configuration.instance().logger().severe("Impossible de charger l'image");
