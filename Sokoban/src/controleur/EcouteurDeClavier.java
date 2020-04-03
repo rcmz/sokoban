@@ -69,15 +69,12 @@ public class EcouteurDeClavier implements KeyListener {
 			}
 			
 			jeu.niveau().movePousseur(touche);
-<<<<<<< HEAD
+			
 			niveauGraphique.setAnimationPousseur(new Animation(niveauGraphique, touche));
 		} catch (IllegalStateException ex) {
-=======
+
 			niveauGraphique.repaint();
-		} catch (IllegalStateException e) {
->>>>>>> branch 'master' of https://github.com/rcmz/sokoban
-			System.out.println("La touche cliqu�e n'a aucune fonction.");
-		}
+		} 
 		
 		if (jeu.niveau().lvlIsFinished()) {
 			if (jeu.prochainNiveau()) {
