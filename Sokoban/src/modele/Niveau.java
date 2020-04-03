@@ -198,6 +198,111 @@ public class Niveau implements Cloneable {
     	return suiteCoups;
     }
     
+    public void getSuiteCoupsFinal(ArrayList<char[][]> maps, ArrayList<Coup> suiteCoups, int xPousseur, int yPousseur) {
+    	//Cas de base : le niveau est terminé -> On sort
+    	if (lvlIsFinished() || lvlIsBlocked()) {
+    		return;
+    	}
+   
+    	System.out.println("on passe après le return");
+    	
+    	//Si on peut aller au dessus sans bloquer le niveau, on le fait
+    	move(xPousseur - 1, yPousseur, -1, 0);
+    	if (xPousseur != posPousseur[0] || yPousseur != posPousseur[1]) {
+    		System.out.println("on rentre au dessus");
+    		//On a pu effectuer le déplacement
+    		if (!lvlIsBlocked()) {
+    			//On n'a pas bloqué le niveau
+    			boolean doesntExist = true;
+    			
+    			//On vérifie que la nouvelle conformation n'existe pas
+    			for (int i = 0; i < maps.size(); i++) {
+    				if (Arrays.deepEquals(maps.get(i), m_cases)) {
+    					doesntExist = false;
+    					break;
+    				}
+    			}
+    			if (doesntExist) {
+	    			maps.add(m_cases);
+	    			suiteCoups.add(getCoupFromCurrentPos());
+	    			getSuiteCoupsFinal(maps, suiteCoups, posPousseur[0], posPousseur[1]);
+    			}
+    		}
+    	}
+    	
+    	//Si on peut aller en dessous sans bloquer le niveau, on le fait
+    	move(xPousseur + 1, yPousseur, 1, 0);
+    	if (xPousseur != posPousseur[0] || yPousseur != posPousseur[1]) {
+    		System.out.println("on rentre au dessous");
+    		//On a pu effectuer le déplacement
+    		if (!lvlIsBlocked()) {
+    			//On n'a pas bloqué le niveau
+    			boolean doesntExist = true;
+    			
+    			//On vérifie que la nouvelle conformation n'existe pas
+    			for (int i = 0; i < maps.size(); i++) {
+    				if (Arrays.deepEquals(maps.get(i), m_cases)) {
+    					doesntExist = false;
+    					break;
+    				}
+    			}
+    			if (doesntExist) {
+	    			maps.add(m_cases);
+	    			suiteCoups.add(getCoupFromCurrentPos());
+	    			getSuiteCoupsFinal(maps, suiteCoups, posPousseur[0], posPousseur[1]);
+    			}
+    		}
+    	}
+    	
+    	//Si on peut aller à gauche sans bloquer le niveau, on le fait
+    	move(xPousseur, yPousseur - 1, 0, -1);
+    	if (xPousseur != posPousseur[0] || yPousseur != posPousseur[1]) {
+    		System.out.println("on rentre a gauche");
+    		//On a pu effectuer le déplacement
+    		if (!lvlIsBlocked()) {
+    			//On n'a pas bloqué le niveau
+    			boolean doesntExist = true;
+    			
+    			//On vérifie que la nouvelle conformation n'existe pas
+    			for (int i = 0; i < maps.size(); i++) {
+    				if (Arrays.deepEquals(maps.get(i), m_cases)) {
+    					doesntExist = false;
+    					break;
+    				}
+    			}
+    			if (doesntExist) {
+	    			maps.add(m_cases);
+	    			suiteCoups.add(getCoupFromCurrentPos());
+	    			getSuiteCoupsFinal(maps, suiteCoups, posPousseur[0], posPousseur[1]);
+    			}
+    		}
+    	}
+    	
+    	//Si on peut aller à droite sans bloquer le niveau, on le fait
+    	move(xPousseur, yPousseur + 1, 0, 1);
+    	if (xPousseur != posPousseur[0] || yPousseur != posPousseur[1]) {
+    		System.out.println("on rentre a droite");
+    		//On a pu effectuer le déplacement
+    		if (!lvlIsBlocked()) {
+    			//On n'a pas bloqué le niveau
+    			boolean doesntExist = true;
+    			
+    			//On vérifie que la nouvelle conformation n'existe pas
+    			for (int i = 0; i < maps.size(); i++) {
+    				if (Arrays.deepEquals(maps.get(i), m_cases)) {
+    					doesntExist = false;
+    					break;
+    				}
+    			}
+    			if (doesntExist) {
+	    			maps.add(m_cases);
+	    			suiteCoups.add(getCoupFromCurrentPos());
+	    			getSuiteCoupsFinal(maps, suiteCoups, posPousseur[0], posPousseur[1]);
+    			}
+    		}
+    	}
+    }
+    
     private Coup getCoupFromCurrentPos() {
     	Coup coup = new Coup();
     	
@@ -437,7 +542,7 @@ public class Niveau implements Cloneable {
     	}
     	
     	//On vérifie qu'on est bon à droite
-    	if (aMur(i, j + 1)) {
+    	if (!caisseBloquee && aMur(i, j + 1)) {
     		if ((aMur(i + 1, j) || aMur(i - 1, j)) && !aBut(i,j)) {
     			caisseBloquee = true;
     		}
@@ -532,5 +637,9 @@ public class Niveau implements Cloneable {
     
     public void setCoupActuel(Coup coup) {
     	this.coupActuel = coup;
+    }
+    
+    public char[][] getMap() {
+    	return this.m_cases;
     }
 }
