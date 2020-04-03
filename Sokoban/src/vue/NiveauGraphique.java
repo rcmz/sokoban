@@ -34,6 +34,9 @@ import modele.Niveau;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.SwingUtilities;
+
+import controleur.Coup;
+
 import java.awt.*;
 import java.io.InputStream;
 
@@ -45,6 +48,8 @@ public class NiveauGraphique extends JComponent {
 	private Image imgCaisseSurBut;
 	private Image imgCaisse;
 	private Image imgBut;
+	Image rouge;
+	Image vert;
 	private int tailleCase = 20;
 	private boolean maximized;
 	private Animation animationPousseur;
@@ -54,12 +59,15 @@ public class NiveauGraphique extends JComponent {
 		// Chargement de l'image de la même manière que le fichier de niveaux
 		try {
 			// Chargement d'une image utilisable dans Swing
-			this.imgSol = ImageIO.read(Configuration.charge(Paths.MOTHERBRAIN_ANTOINE + "images/Sol.png"));
-			this.imgPousseur = ImageIO.read(Configuration.charge(Paths.MOTHERBRAIN_ANTOINE + "images/Pousseur.png"));
-			this.imgMur = ImageIO.read(Configuration.charge(Paths.MOTHERBRAIN_ANTOINE + "images/Mur.png"));
-			this.imgCaisseSurBut = ImageIO.read(Configuration.charge(Paths.MOTHERBRAIN_ANTOINE + "images/CaisseSurBut.png"));
-			this.imgCaisse = ImageIO.read(Configuration.charge(Paths.MOTHERBRAIN_ANTOINE + "images/Caisse.png"));
-			this.imgBut = ImageIO.read(Configuration.charge(Paths.MOTHERBRAIN_ANTOINE + "images/But.png"));
+			this.imgSol = ImageIO.read(Configuration.charge(Paths.LINUX_QUENTIN + "images/Sol.png"));
+			this.imgPousseur = ImageIO.read(Configuration.charge(Paths.LINUX_QUENTIN + "images/Pousseur.png"));
+			this.imgMur = ImageIO.read(Configuration.charge(Paths.LINUX_QUENTIN + "images/Mur.png"));
+			this.imgCaisseSurBut = ImageIO.read(Configuration.charge(Paths.LINUX_QUENTIN + "images/CaisseSurBut.png"));
+			this.imgCaisse = ImageIO.read(Configuration.charge(Paths.LINUX_QUENTIN + "images/Caisse.png"));
+			this.imgBut = ImageIO.read(Configuration.charge(Paths.LINUX_QUENTIN + "images/But.png"));
+			this.rouge = ImageIO.read(Configuration.charge(Paths.LINUX_QUENTIN + "images/Rouge.png"));
+			this.vert = ImageIO.read(Configuration.charge(Paths.LINUX_QUENTIN + "images/Vert.png"));
+			
 		} catch (Exception e) {
 			Configuration.instance().logger().severe("Impossible de charger l'image");
 			System.exit(1);
@@ -114,6 +122,7 @@ public class NiveauGraphique extends JComponent {
 				
 				if (this.jeu.niveau().aPousseur(i, j)) {
 					drawable.drawImage(imgPousseur, (int) ((j+animationPousseur.getX())*tailleCase), (int) ((i+animationPousseur.getY())*tailleCase), tailleCase, tailleCase, null);
+					showPossibilities(drawable, i, j);
 				}
 			}
 		}
@@ -148,6 +157,41 @@ public class NiveauGraphique extends JComponent {
 		} else {
 			device.setFullScreenWindow((JFrame) SwingUtilities.getWindowAncestor(this));
 			maximized = true;
+		}
+	}
+	
+	private void showPossibilities(Graphics2D drawable, int i, int j) {
+		Coup coupActuel = jeu.niveau().getCoupActuel();
+		
+		//Testé : Fonctionne bien, par contre problème de plans entre l'image et la ligne
+		
+		if (coupActuel != null) {
+			drawable.setColor(new Color(0xFF0000));
+			drawable.setStroke(new BasicStroke(10));
+			
+			if (coupActuel.caseGauchePossible()) {
+				drawable.drawImage(rouge, (j - 1) * tailleCase, i * tailleCase, tailleCase, tailleCase, null);
+//				drawable.drawLine((j - 1) * tailleCase, i * tailleCase, j * tailleCase, (i + 1) * tailleCase);
+//				drawable.drawLine((j - 1) * tailleCase, (i + 1) * tailleCase, j * tailleCase, i * tailleCase);
+			}
+
+			if (coupActuel.caseDroitePossible()) {
+				drawable.drawImage(rouge, (j + 1) * tailleCase, i * tailleCase, tailleCase, tailleCase, null);
+//				drawable.drawLine((j + 1) * tailleCase, i * tailleCase, (j + 2) * tailleCase, (i + 1) * tailleCase);
+//				drawable.drawLine((j + 1) * tailleCase, (i + 1) * tailleCase, (j + 2) * tailleCase, i * tailleCase);
+			}
+			
+			if (coupActuel.caseBasPossible()) {
+				drawable.drawImage(rouge, j * tailleCase, (i + 1) * tailleCase, tailleCase, tailleCase, null);
+//				drawable.drawLine(j * tailleCase, (i + 1) * tailleCase, (j + 1) * tailleCase, (i + 2) * tailleCase);
+//				drawable.drawLine(j * tailleCase, (i + 2) * tailleCase, (j + 1) * tailleCase, (i + 1) * tailleCase);
+			}
+			
+			if (coupActuel.caseHautPossible()) {
+				drawable.drawImage(rouge, j * tailleCase, (i - 1) * tailleCase, tailleCase, tailleCase, null);
+//				drawable.drawLine(j * tailleCase, (i - 1) * tailleCase, (j + 1) * tailleCase, i * tailleCase);
+//				drawable.drawLine(j * tailleCase, i * tailleCase, (j + 1) * tailleCase, (i - 1) * tailleCase);
+			}
 		}
 	}
 }

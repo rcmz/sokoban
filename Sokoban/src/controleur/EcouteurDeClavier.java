@@ -69,8 +69,13 @@ public class EcouteurDeClavier implements KeyListener {
 			}
 			
 			jeu.niveau().movePousseur(touche);
+<<<<<<< HEAD
 			niveauGraphique.setAnimationPousseur(new Animation(niveauGraphique, touche));
 		} catch (IllegalStateException ex) {
+=======
+			niveauGraphique.repaint();
+		} catch (IllegalStateException e) {
+>>>>>>> branch 'master' of https://github.com/rcmz/sokoban
 			System.out.println("La touche cliqu�e n'a aucune fonction.");
 		}
 		
@@ -82,6 +87,8 @@ public class EcouteurDeClavier implements KeyListener {
 				System.out.println("Vous avez termin� tous les niveaux !");
 				System.exit(0);
 			}
+		} else if (jeu.niveau().lvlIsBlocked()) {
+			System.out.println("Le niveau est bloqué, vous pouvez recommencer  ! =)");
 		}
 	}
 }

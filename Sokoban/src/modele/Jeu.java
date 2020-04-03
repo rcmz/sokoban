@@ -11,7 +11,7 @@ public class Jeu {
 		InputStream inputStream = null;
 		
 		try {
-			inputStream = new FileInputStream(Paths.MOTHERBRAIN_ANTOINE + "src/niveaux.txt");
+			inputStream = new FileInputStream(Paths.LINUX_QUENTIN + "src/niveaux.txt");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

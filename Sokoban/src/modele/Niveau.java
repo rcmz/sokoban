@@ -1,16 +1,19 @@
 package modele;
 import java.util.*;
 
+import controleur.Coup;
 import controleur.EnumSymboles;
 
 public class Niveau implements Cloneable {
     private String m_nom;
     private char[][] m_cases;
     private int[] posPousseur;
-
+    private Coup coupActuel;
+    
     public Niveau() {
         m_cases = new char[0][0];
         posPousseur = new int[2];
+        coupActuel = null;
     }
 
     private void redimensionnerCasesSiNecessaire(int l, int c) {
@@ -82,22 +85,62 @@ public class Niveau implements Cloneable {
     }
 
     public boolean estVide(int i, int j) {
+    	if (i >= m_cases.length || i < 0) {
+    		return false;
+    	}
+    	
+    	if (j >= m_cases[0].length || j < 0) {
+    		return false;
+    	}
+    	
         return m_cases[i][j] == EnumSymboles.SOL;
     }
 
     public boolean aMur(int i, int j) {
+    	if (i >= m_cases.length || i < 0) {
+    		return false;
+    	}
+    	
+    	if (j >= m_cases[0].length || j < 0) {
+    		return false;
+    	}
+    	
         return m_cases[i][j] == EnumSymboles.MUR;
     }
 
     public boolean aBut(int i, int j) {
+    	if (i >= m_cases.length || i < 0) {
+    		return false;
+    	}
+    	
+    	if (j >= m_cases[0].length || j < 0) {
+    		return false;
+    	}
+    	
         return m_cases[i][j] == EnumSymboles.BUT || m_cases[i][j] == EnumSymboles.CAISSE_SUR_BUT || m_cases[i][j] == EnumSymboles.POUSSEUR_SUR_BUT;
     }
 
     public boolean aPousseur(int i, int j) {
+    	if (i >= m_cases.length || i < 0) {
+    		return false;
+    	}
+    	
+    	if (j >= m_cases[0].length || j < 0) {
+    		return false;
+    	}
+    	
         return m_cases[i][j] == EnumSymboles.POUSSEUR || m_cases[i][j] == EnumSymboles.POUSSEUR_SUR_BUT;
     }
 
     public boolean aCaisse(int i, int j) {
+    	if (i >= m_cases.length || i < 0) {
+    		return false;
+    	}
+    	
+    	if (j >= m_cases[0].length || j < 0) {
+    		return false;
+    	}
+    	
         return m_cases[i][j] == EnumSymboles.CAISSE || m_cases[i][j] == EnumSymboles.CAISSE_SUR_BUT;
     }
     
@@ -113,31 +156,107 @@ public class Niveau implements Cloneable {
     	while (currentPosPousseur[0] == posPousseur[0] && currentPosPousseur[1] == posPousseur[1]) {
 	    	Random rand = new Random();
 	    	
+	    	//Pb ici : la fonction "move" modifie la grille même si le pousseur ne bouge pas : résolu en clonant le niveau 
+	    	
 	    	int val = rand.nextInt() % 4;
-	    	val = (val < 0) ? val+4 : val;
+	    	val = (val < 0) ? val + 4 : val;
 	    	
 	    	if (val == 0) {
-	    		move(posPousseur[0]-1, posPousseur[1], -1, 0);
+	    		move(posPousseur[0] - 1, posPousseur[1], -1, 0);
 	    	} else if (val == 1) {
-	    		move(posPousseur[0]+1, posPousseur[1], 1, 0);
+	    		move(posPousseur[0] + 1, posPousseur[1], 1, 0);
 	    	} else if (val == 2) {
-	    		move(posPousseur[0], posPousseur[1]-1, 0, -1);
+	    		move(posPousseur[0], posPousseur[1] - 1, 0, -1);
 	    	} else if (val == 3) {
-	    		move(posPousseur[0], posPousseur[1]+1, 0, 1);
+	    		move(posPousseur[0], posPousseur[1] + 1, 0, 1);
 	    	} else {
 	    		throw new IllegalStateException();
 	    	}
     	}
     }
     
+    public ArrayList<Coup> getSuiteCoupsRandom(int nbCoups) {
+    	int[] posPousseurInit = posPousseur;    
+    	ArrayList<Coup> suiteCoups = new ArrayList<>();
+    	int i = 0;
+        
+    	/*
+    	 * Tant que i est inférieur au nombre de coups souhaités,
+    	 * on ajoute des coups a notre liste de coups avec notre
+    	 * fonction de génération de coups aléatoires
+    	 */
+    	
+    	while (i < nbCoups) {
+	    	movePousseurRandomly();
+	    	Coup coup = getCoupFromCurrentPos();
+	    	suiteCoups.add(coup);
+	    	i++;
+    	}
+    	
+    	posPousseur = posPousseurInit;
+    	
+    	return suiteCoups;
+    }
+    
+    private Coup getCoupFromCurrentPos() {
+    	Coup coup = new Coup();
+    	
+    	int xPousseur = posPousseur[0];
+    	int yPousseur = posPousseur[1];
+    	
+    	coup.setPositionActuelle(posPousseur);
+    
+    	//On vérifie si on peut aller à gauche
+    	if (estVide(xPousseur, yPousseur - 1) || aBut(xPousseur, yPousseur - 1)) {
+    		coup.setIfCaseGauchePossible(true);
+    	} else if (aCaisse(xPousseur, yPousseur - 1)) {
+    		if (estVide(xPousseur, yPousseur - 2) || aBut(xPousseur, yPousseur - 2)) {
+    			coup.setIfCaseGauchePossible(true);
+    		}
+    	}
+    	
+    	//On vérifie si on peut aller à droite
+    	if (estVide(xPousseur, yPousseur + 1) || aBut(xPousseur, yPousseur + 1)) {
+    		coup.setIfCaseDroitePossible(true);
+    	} else if (aCaisse(xPousseur, yPousseur + 1)) {
+    		if (estVide(xPousseur, yPousseur + 2) || aBut(xPousseur, yPousseur + 2)) {
+    			coup.setIfCaseDroitePossible(true);
+    		}
+    	}
+    	
+    	//On vérifie si on peut aller en bas
+    	if (estVide(xPousseur + 1, yPousseur) || aBut(xPousseur + 1, yPousseur)) {
+    		coup.setIfCaseBasPossible(true);
+    	} else if (aCaisse(xPousseur + 1, yPousseur)) {
+    		if (estVide(xPousseur + 1, yPousseur) || aBut(xPousseur + 1, yPousseur)) {
+    			coup.setIfCaseBasPossible(true);
+    		}
+    	}
+    	
+    	//On vérifie si on peut aller en haut
+    	if (estVide(xPousseur - 1, yPousseur) || aBut(xPousseur - 1, yPousseur)) {
+    		coup.setIfCaseHautPossible(true);
+    	} else if (aCaisse(xPousseur - 1, yPousseur)) {
+    		if (estVide(xPousseur - 2, yPousseur) || aBut(xPousseur - 2, yPousseur)) {
+    			coup.setIfCaseHautPossible(true);
+    		}
+    	}
+    	
+    	return coup;
+    }
+    
+    public void movePousseur(int[] posPousseur) {
+    	movePousseur(posPousseur[0], posPousseur[1]);
+    }
+    
     public void movePousseur(int caseX, int caseY) {
-    	if (onPousseur(caseX+1, caseY)) {
+    	if (onPousseur(caseX + 1, caseY)) {
     		move(caseX, caseY, -1, 0);
-    	} else if (onPousseur(caseX-1, caseY)) {
+    	} else if (onPousseur(caseX - 1, caseY)) {
     		move(caseX, caseY, 1, 0);
-    	} else if (onPousseur(caseX, caseY+1)) {
+    	} else if (onPousseur(caseX, caseY + 1)) {
     		move(caseX, caseY, 0, -1);
-    	} else if (onPousseur(caseX, caseY-1)) {
+    	} else if (onPousseur(caseX, caseY - 1)) {
     		move(caseX, caseY, 0, 1);
     	} else {
     		throw new IllegalStateException();
@@ -290,6 +409,86 @@ public class Niveau implements Cloneable {
     	return lvlIsFinished;
     }
     
+    public boolean lvlIsBlocked() {
+    	boolean isBlocked = false;
+    	
+    	//On ne vérifie pas la bordure puisqu'elle est nécessairement composée de murs
+    	
+    	for (int i = 1; i < m_cases.length - 1; i++) {
+    		for (int j = 1; j < m_cases[i].length - 1; j++) {
+    			if (aCaisse(i, j)) {
+    				//S'il y a une caisse, on regarde si elle est bloquée ou pas
+    				if (caisseEstBloqueeDefinitivement(i, j)) {
+    					isBlocked = true;
+    					break;
+    				}
+    			}
+    		}
+    		
+    		if (isBlocked) {
+    			break;
+    		}
+    	}
+    	
+    	return isBlocked;
+    }
+    
+    private boolean caisseEstBloqueeDefinitivement(int i, int j) {
+    	//On vérifie que la caisse n'est pas collée à deux murs diagonalement adjacents
+    	boolean caisseBloquee = false;
+    	
+    	//On vérifie qu'on est bon a gauche
+    	if (aMur(i, j - 1)) {
+    		if ((aMur(i + 1, j) || aMur(i - 1, j)) && !aBut(i,j) ) {
+    			caisseBloquee = true;
+    		}
+    	}
+    	
+    	//On vérifie qu'on est bon à droite
+    	if (aMur(i, j + 1)) {
+    		if ((aMur(i + 1, j) || aMur(i - 1, j)) && !aBut(i,j)) {
+    			caisseBloquee = true;
+    		}
+    	}
+    	
+    	//On a fait tous les cas possibles de blocage donc on return
+    	
+    	return caisseBloquee;
+    }
+    
+    public boolean caisseEstBloqueeTemporairementn(int i, int j) {
+    	//Sur le même principe que le blocage définitif, mais on suppose que la caisse n'est pas bloquée définitivement (à utiliser en +)
+    	boolean caisseBloquee = false;
+    	
+    	//On vérifie qu'on est bon a gauche
+    	if (aMur(i, j - 1)) {
+    		if (aCaisse(i + 1, j) || aCaisse(i - 1, j)) {
+    			caisseBloquee = true;
+    		}
+    	} else if (aCaisse(i, j - 1)) {
+    		if (aCaisse(i + 1, j) || aCaisse(i - 1, j) || aMur(i + 1, j) || aMur(i - 1, j)) {
+    			caisseBloquee = true;
+    		}
+    	}
+    	
+    	//On vérifie qu'on est bon à droite
+    	if (aMur(i, j + 1)) {
+    		if (aCaisse(i + 1, j) || aCaisse(i - 1, j)) {
+    			caisseBloquee = true;
+    		}
+    	} else if (aCaisse(i, j + 1)) {
+    		if (aCaisse(i + 1, j) || aCaisse(i - 1, j) || aMur(i + 1, j) || aMur(i - 1, j)) {
+    			caisseBloquee = true;
+    		}
+    	}
+    	
+    	//On a fait tous les cas possibles de blocage donc on return
+    	
+    	return caisseBloquee;
+    }
+    
+    //Clone
+    
     public Niveau clone() {
     	Niveau newNiveau;
     	
@@ -304,6 +503,8 @@ public class Niveau implements Cloneable {
     		return null;
     	}
     }
+    
+    //Deep copy
     
     private char[][] deepCopyChar(char[][] prevArray) {
     	char[][] newArray = new char[prevArray.length][prevArray[0].length];
@@ -325,5 +526,19 @@ public class Niveau implements Cloneable {
        	}
     	
     	return newArray;
+    }
+    
+    //Getters + setters
+    
+    public int[] getPosPousseur() {
+    	return this.posPousseur;
+    }
+    
+    public Coup getCoupActuel() {
+    	return this.coupActuel;
+    }
+    
+    public void setCoupActuel(Coup coup) {
+    	this.coupActuel = coup;
     }
 }
