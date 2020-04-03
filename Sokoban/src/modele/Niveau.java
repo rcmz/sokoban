@@ -105,8 +105,8 @@ public class Niveau implements Cloneable {
     	int[] currentPosPousseur = posPousseur;    	
         
     	/*
-    		Tant qu'on n'a "pas de chance" sur la valeur du random, i.e. que la valeur renvoyée ne permet
-    		pas de déplacer le pousseur (mur a la case indiquée par exemple), on récupère une nouvelle
+    		Tant qu'on n'a "pas de chance" sur la valeur du random, i.e. que la valeur renvoyï¿½e ne permet
+    		pas de dï¿½placer le pousseur (mur a la case indiquï¿½e par exemple), on rï¿½cupï¿½re une nouvelle
     		valeur et on retest
     	*/
     	
@@ -165,6 +165,14 @@ public class Niveau implements Cloneable {
     
     public boolean onPousseur(int x, int y) {
     	return (posPousseur[0] == x && posPousseur[1] == y);
+    }
+    
+    public int getPousseurX() {
+    	return posPousseur[1];
+    }
+    
+    public int getPousseurY() {
+    	return posPousseur[0];
     }
     
     public void move(int caseX, int caseY, int gd, int hb) {

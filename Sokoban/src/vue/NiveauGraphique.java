@@ -39,26 +39,27 @@ import java.io.InputStream;
 
 public class NiveauGraphique extends JComponent {
 	public Jeu jeu;
-	Image imgSol;
-	Image imgPousseur;
-	Image imgMur;
-	Image imgCaisseSurBut;
-	Image imgCaisse;
-	Image imgBut;
+	private Image imgSol;
+	private Image imgPousseur;
+	private Image imgMur;
+	private Image imgCaisseSurBut;
+	private Image imgCaisse;
+	private Image imgBut;
 	private int tailleCase = 20;
-	public int etape = 0;
 	private boolean maximized;
+	private Animation animationPousseur;
+	private Animation animationCaisse;
 
 	public NiveauGraphique(Jeu jeu) {
 		// Chargement de l'image de la même manière que le fichier de niveaux
 		try {
 			// Chargement d'une image utilisable dans Swing
-			this.imgSol = ImageIO.read(Configuration.charge(Paths.WINDOWS_QUENTIN + "images/Sol.png"));
-			this.imgPousseur = ImageIO.read(Configuration.charge(Paths.WINDOWS_QUENTIN + "images/Pousseur.png"));
-			this.imgMur = ImageIO.read(Configuration.charge(Paths.WINDOWS_QUENTIN + "images/Mur.png"));
-			this.imgCaisseSurBut = ImageIO.read(Configuration.charge(Paths.WINDOWS_QUENTIN + "images/CaisseSurBut.png"));
-			this.imgCaisse = ImageIO.read(Configuration.charge(Paths.WINDOWS_QUENTIN + "images/Caisse.png"));
-			this.imgBut = ImageIO.read(Configuration.charge(Paths.WINDOWS_QUENTIN + "images/But.png"));
+			this.imgSol = ImageIO.read(Configuration.charge(Paths.MOTHERBRAIN_ANTOINE + "images/Sol.png"));
+			this.imgPousseur = ImageIO.read(Configuration.charge(Paths.MOTHERBRAIN_ANTOINE + "images/Pousseur.png"));
+			this.imgMur = ImageIO.read(Configuration.charge(Paths.MOTHERBRAIN_ANTOINE + "images/Mur.png"));
+			this.imgCaisseSurBut = ImageIO.read(Configuration.charge(Paths.MOTHERBRAIN_ANTOINE + "images/CaisseSurBut.png"));
+			this.imgCaisse = ImageIO.read(Configuration.charge(Paths.MOTHERBRAIN_ANTOINE + "images/Caisse.png"));
+			this.imgBut = ImageIO.read(Configuration.charge(Paths.MOTHERBRAIN_ANTOINE + "images/But.png"));
 		} catch (Exception e) {
 			Configuration.instance().logger().severe("Impossible de charger l'image");
 			System.exit(1);
@@ -66,6 +67,8 @@ public class NiveauGraphique extends JComponent {
 		
 		this.jeu = jeu;
 		this.maximized = false;
+		this.animationPousseur = new Animation();
+		this.animationCaisse = new Animation();
 	}
 
 	public void paintComponent(Graphics g) {
@@ -80,35 +83,52 @@ public class NiveauGraphique extends JComponent {
 		tailleCase = Math.min(width/this.jeu.niveau().colonnes(), height/this.jeu.niveau().lignes());
 
 		// On efface tout
-		drawable.setPaint(Color.white);
+		drawable.setPaint(Color.black);
 		drawable.fillRect(0, 0, width, height);
 
-		// On affiche une petite image au milieu
+		// affichage de l'arriere plan
 		for (int i = 0; i < this.jeu.niveau().lignes(); i++) {
 			for (int j = 0; j < this.jeu.niveau().colonnes(); j++) {
 				drawable.drawImage(imgSol, j*tailleCase, i*tailleCase, tailleCase, tailleCase, null);
-				Image img = null;
-				
+
 				if (this.jeu.niveau().aMur(i, j)) {
-					img = imgMur;
-				} else if (this.jeu.niveau().aBut(i, j)) {
-					if (this.jeu.niveau().aCaisse(i, j)) {
-						img = imgCaisseSurBut;
-					} else if (this.jeu.niveau().aPousseur(i, j)){
-						drawable.drawImage(imgBut, j*tailleCase, i*tailleCase, tailleCase, tailleCase, null);
-						img = imgPousseur;
-					} else {
-						img = imgBut;
-					}
-				} else if (this.jeu.niveau().aPousseur(i, j)) {
-					img = imgPousseur;
-				} else if (this.jeu.niveau().aCaisse(i, j)) {
-					img = imgCaisse;
+					drawable.drawImage(imgMur, j*tailleCase, i*tailleCase, tailleCase, tailleCase, null);
 				}
 				
-				drawable.drawImage(img, j*tailleCase, i*tailleCase, tailleCase, tailleCase, null);
+				if (this.jeu.niveau().aBut(i, j)) {
+					drawable.drawImage(imgBut, j*tailleCase, i*tailleCase, tailleCase, tailleCase, null);
+				}
 			}
 		}
+		
+		// affichage du premier plan
+		for (int i = 0; i < this.jeu.niveau().lignes(); i++) {
+			for (int j = 0; j < this.jeu.niveau().colonnes(); j++) {
+				if (this.jeu.niveau().aCaisse(i, j)) {
+					if (animationCaisse.estA(i, j)) {
+						drawable.drawImage(imgCaisse, (int) ((j+animationCaisse.getX())*tailleCase), (int) ((i+animationCaisse.getY())*tailleCase), tailleCase, tailleCase, null);
+					} else {
+						drawable.drawImage(imgCaisse, j*tailleCase, i*tailleCase, tailleCase, tailleCase, null);
+					}
+				}
+				
+				if (this.jeu.niveau().aPousseur(i, j)) {
+					drawable.drawImage(imgPousseur, (int) ((j+animationPousseur.getX())*tailleCase), (int) ((i+animationPousseur.getY())*tailleCase), tailleCase, tailleCase, null);
+				}
+			}
+		}
+	}
+	
+	private void dessineCase(Graphics2D drawable, Image img, int j, int i) {
+		drawable.drawImage(img, j*tailleCase, i*tailleCase, tailleCase, tailleCase, null);
+	}
+	
+	public void setAnimationPousseur(Animation animation) {
+		animationPousseur = animation;
+	}
+	
+	public void setAnimationCaisse(Animation animation) {
+		animationCaisse = animation;
 	}
 
 	public int getTailleCase() {
