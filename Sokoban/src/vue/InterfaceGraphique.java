@@ -6,6 +6,7 @@ import java.awt.GraphicsEnvironment;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import controleur.EcouteurDeClavier;
 import controleur.EcouteurDeSouris;
@@ -33,7 +34,7 @@ public class InterfaceGraphique implements Runnable {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// On fixe la taille et on demarre
-		frame.setSize(500, 300);
+		frame.setSize(1280, 720);
 		frame.setVisible(true);
 	}
 	

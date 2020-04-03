@@ -12,11 +12,11 @@ import javax.swing.Timer;
 
 import modele.Jeu;
 import vue.NiveauGraphique;
+import vue.Animation;
 
 public class EcouteurDeClavier implements KeyListener {
 	private Jeu jeu;
 	private NiveauGraphique niveauGraphique;
-	private EcouteurTimer ecouteurTimer;
 	
 	public EcouteurDeClavier(Jeu jeu, NiveauGraphique niveauGraphique) {
 		this.jeu = jeu;
@@ -55,9 +55,27 @@ public class EcouteurDeClavier implements KeyListener {
 
 	private void movePousseur(int touche) {
 		try {
+			int pousseurX = jeu.niveau().getPousseurX();
+			int pousseurY = jeu.niveau().getPousseurY();
+			
+			if (touche == EnumSymboles.HAUT && jeu.niveau().aCaisse(pousseurY-1, pousseurX)) {
+				niveauGraphique.setAnimationCaisse(new Animation(niveauGraphique, touche, pousseurY-2, pousseurX));
+			} else if (touche == EnumSymboles.BAS && jeu.niveau().aCaisse(pousseurY+1, pousseurX)) {
+				niveauGraphique.setAnimationCaisse(new Animation(niveauGraphique, touche, pousseurY+2, pousseurX));
+			} else if (touche == EnumSymboles.GAUCHE && jeu.niveau().aCaisse(pousseurY, pousseurX-1)) {
+				niveauGraphique.setAnimationCaisse(new Animation(niveauGraphique, touche, pousseurY, pousseurX-2));
+			} else if (touche == EnumSymboles.DROITE && jeu.niveau().aCaisse(pousseurY, pousseurX+1)) {
+				niveauGraphique.setAnimationCaisse(new Animation(niveauGraphique, touche, pousseurY, pousseurX+2));
+			}
+			
 			jeu.niveau().movePousseur(touche);
+<<<<<<< HEAD
+			niveauGraphique.setAnimationPousseur(new Animation(niveauGraphique, touche));
+		} catch (IllegalStateException ex) {
+=======
 			niveauGraphique.repaint();
 		} catch (IllegalStateException e) {
+>>>>>>> branch 'master' of https://github.com/rcmz/sokoban
 			System.out.println("La touche cliqu�e n'a aucune fonction.");
 		}
 		
@@ -72,13 +90,5 @@ public class EcouteurDeClavier implements KeyListener {
 		} else if (jeu.niveau().lvlIsBlocked()) {
 			System.out.println("Le niveau est bloqué, vous pouvez recommencer  ! =)");
 		}
-	}
-	
-	private void initTimer() {
-		niveauGraphique.etape = 0;
-		ecouteurTimer = new EcouteurTimer(niveauGraphique);
-		Timer timer = new Timer(1000, ecouteurTimer);
-		timer.start();
-		niveauGraphique.repaint();
 	}
 }

@@ -5,4 +5,5 @@ public class Paths {
 	public static final String LINUX_QUENTIN = "/home/qni/EclipseProjects/sokoban/Sokoban/";
 	public static final String MANDELBROT_ANTOINE = "/home/r/richeran/git/sokoban/Sokoban/";
 	public static final String MANDELBROT_QUENTIN = "/home/n/nivonq/Documents/sokoban_git/Sokoban/";
+	public static final String MOTHERBRAIN_ANTOINE = "/home/rcmz/git/sokoban/Sokoban/";
 }

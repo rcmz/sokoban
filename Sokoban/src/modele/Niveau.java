@@ -391,6 +391,14 @@ public class Niveau implements Cloneable {
     	return (posPousseur[0] == x && posPousseur[1] == y);
     }
     
+    public int getPousseurX() {
+    	return posPousseur[1];
+    }
+    
+    public int getPousseurY() {
+    	return posPousseur[0];
+    }
+    
     public void move(int caseX, int caseY, int gd, int hb) {
     	if (m_cases[caseX][caseY] == EnumSymboles.CAISSE) {
 			if (m_cases[caseX+gd][caseY+hb] == EnumSymboles.BUT || m_cases[caseX+gd][caseY+hb] == EnumSymboles.SOL) {
